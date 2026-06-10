@@ -141,7 +141,12 @@ const I18N = {
     fillAll:"Merci de remplir tous les champs.", securityNote:"Vos données restent sur cet appareil (prototype).",
     gateTitle:"Accès réservé", gateSub:"Entrez le code d'accès qui vous a été communiqué pour continuer.",
     gateLabel:"Code d'accès", gateBtn:"Entrer", gateErr:"Code incorrect. Réessayez.",
-    textToAnalyze:"Texte à analyser", yourAnswer:"Votre réponse…", fillHint:"Tapez le mot manquant"
+    textToAnalyze:"Texte à analyser", yourAnswer:"Votre réponse…", fillHint:"Tapez le mot manquant",
+    forgotPwd:"Mot de passe oublié ?", secQuestion:"Question secrète", secAnswer:"Réponse",
+    resetTitle:"Réinitialiser le mot de passe", resetSub:"Entrez votre e-mail pour retrouver votre question secrète.",
+    continueBtn:"Continuer", newPwd:"Nouveau mot de passe", resetBtn:"Réinitialiser",
+    emailNotFound:"Aucun compte avec cet e-mail.", noSecQ:"Ce compte n'a pas de question secrète.",
+    wrongAnswer:"Réponse incorrecte.", pwdResetOk:"Mot de passe mis à jour ! Connectez-vous."
   },
   en:{
     tagline:"Build your skills at your own pace, on a path adapted to your level.",
@@ -164,7 +169,12 @@ const I18N = {
     fillAll:"Please fill in all fields.", securityNote:"Your data stays on this device (prototype).",
     gateTitle:"Restricted access", gateSub:"Enter the access code you were given to continue.",
     gateLabel:"Access code", gateBtn:"Enter", gateErr:"Wrong code. Try again.",
-    textToAnalyze:"Text to analyze", yourAnswer:"Your answer…", fillHint:"Type the missing word"
+    textToAnalyze:"Text to analyze", yourAnswer:"Your answer…", fillHint:"Type the missing word",
+    forgotPwd:"Forgot password?", secQuestion:"Security question", secAnswer:"Answer",
+    resetTitle:"Reset password", resetSub:"Enter your email to retrieve your security question.",
+    continueBtn:"Continue", newPwd:"New password", resetBtn:"Reset",
+    emailNotFound:"No account with this email.", noSecQ:"This account has no security question.",
+    wrongAnswer:"Wrong answer.", pwdResetOk:"Password updated! Please sign in."
   }
 };
 let lang = localStorage.getItem('su_lang') || 'fr';
@@ -176,6 +186,14 @@ function setLang(l){ lang=l; localStorage.setItem('su_lang',l);
 
 /* ====== CODE D'ACCÈS — change la valeur ci-dessous pour définir ton propre code ====== */
 const ACCESS_CODE = "SKILLYAM-2026";
+
+/* Questions secrètes proposées à l'inscription (pour la réinitialisation du mot de passe) */
+const SECQ = [
+  {fr:"Le nom de votre premier animal ?", en:"Your first pet's name?"},
+  {fr:"Votre ville de naissance ?", en:"Your city of birth?"},
+  {fr:"Le prénom de votre ami(e) d'enfance ?", en:"Your childhood best friend's first name?"},
+  {fr:"Votre plat préféré ?", en:"Your favourite dish?"}
+];
 
 /* ============ Domains ============ */
 const DOMAINS = {
@@ -531,6 +549,9 @@ function submitGate(){
 let authMode='login';
 function renderAuth(){
   const v=document.getElementById('view-auth');
+  if(authMode==='forgot'){ renderForgot(v); return; }
+  const selStyle="width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px;font-family:inherit";
+  const secOpts=SECQ.map((qq,i)=>`<option value="${i}">${qq[lang]}</option>`).join('');
   v.innerHTML=`
    <div class="card" style="max-width:440px;margin:30px auto">
      <h1>${authMode==='login'?t('login'):t('signup')}</h1>
@@ -538,13 +559,60 @@ function renderAuth(){
      ${authMode==='signup'?`<label>${t('name')}</label><input id="f-name" autocomplete="given-name">`:''}
      <label>${t('email')}</label><input id="f-email" type="email" autocomplete="email">
      <label>${t('pwd')}</label><input id="f-pwd" type="password" autocomplete="current-password">
+     ${authMode==='signup'?`<label>${t('secQuestion')}</label><select id="f-secq" style="${selStyle}">${secOpts}</select><label>${t('secAnswer')}</label><input id="f-seca">`:''}
      <div class="msg err" id="auth-msg"></div>
      <button class="btn full" onclick="submitAuth()">${authMode==='login'?t('login'):t('signup')}</button>
-     <p class="sub" style="margin-top:16px;text-align:center">
+     ${authMode==='login'?`<p class="sub" style="margin-top:12px;text-align:center"><span class="link" onclick="startForgot()">${t('forgotPwd')}</span></p>`:''}
+     <p class="sub" style="margin-top:8px;text-align:center">
        ${authMode==='login'?t('noAccount'):t('haveAccount')}
        <span class="link" onclick="toggleAuth()">${authMode==='login'?t('signupNow'):t('loginNow')}</span>
      </p>
    </div>`;
+}
+let forgotStep=1, forgotUser=null;
+function startForgot(){ authMode='forgot'; forgotStep=1; forgotUser=null; renderAuth(); }
+function backToLogin(){ authMode='login'; renderAuth(); }
+function renderForgot(v){
+  if(forgotStep===1){
+    v.innerHTML=`
+     <div class="card" style="max-width:440px;margin:30px auto">
+       <h1>${t('resetTitle')}</h1>
+       <p class="sub">${t('resetSub')}</p>
+       <label>${t('email')}</label><input id="r-email" type="email">
+       <div class="msg err" id="auth-msg"></div>
+       <button class="btn full" onclick="forgotLookup()">${t('continueBtn')}</button>
+       <p class="sub" style="margin-top:14px;text-align:center"><span class="link" onclick="backToLogin()">← ${t('login')}</span></p>
+     </div>`;
+  } else {
+    v.innerHTML=`
+     <div class="card" style="max-width:440px;margin:30px auto">
+       <h1>${t('resetTitle')}</h1>
+       <label>${t('secQuestion')}</label>
+       <div class="lesson" style="margin:6px 0 0">${SECQ[forgotUser.secQ][lang]}</div>
+       <label>${t('secAnswer')}</label><input id="r-ans">
+       <label>${t('newPwd')}</label><input id="r-pwd" type="password">
+       <div class="msg err" id="auth-msg"></div>
+       <button class="btn full" onclick="doReset()">${t('resetBtn')}</button>
+       <p class="sub" style="margin-top:14px;text-align:center"><span class="link" onclick="backToLogin()">← ${t('login')}</span></p>
+     </div>`;
+  }
+}
+function forgotLookup(){
+  const email=(document.getElementById('r-email').value||'').trim().toLowerCase();
+  const msg=document.getElementById('auth-msg');
+  const u=DB.users()[email];
+  if(!u){ msg.textContent=t('emailNotFound'); return; }
+  if(u.secQ===undefined||u.secQ===null||u.secA===undefined){ msg.textContent=t('noSecQ'); return; }
+  forgotUser=u; forgotStep=2; renderAuth();
+}
+function doReset(){
+  const ans=document.getElementById('r-ans').value||'';
+  const np=document.getElementById('r-pwd').value||'';
+  const msg=document.getElementById('auth-msg');
+  if(hash(normalize(ans))!==forgotUser.secA){ msg.textContent=t('wrongAnswer'); return; }
+  if(np.length<6){ msg.textContent=t('pwdShort'); return; }
+  forgotUser.pwd=hash(np); saveUser(forgotUser);
+  toast(t('pwdResetOk')); authMode='login'; renderAuth();
 }
 function toggleAuth(){ authMode=authMode==='login'?'signup':'login'; renderAuth(); }
 function submitAuth(){
@@ -556,7 +624,10 @@ function submitAuth(){
     if(pwd.length<6){msg.textContent=t('pwdShort');return;}
     const all=DB.users(); if(all[email]){msg.textContent=t('emailUsed');return;}
     const name=document.getElementById('f-name').value.trim();
-    saveUser({email,name,pwd:hash(pwd),progress:{}});
+    const secQ=parseInt(document.getElementById('f-secq').value,10);
+    const secAraw=document.getElementById('f-seca').value.trim();
+    if(!secAraw){msg.textContent=t('fillAll');return;}
+    saveUser({email,name,pwd:hash(pwd),secQ:secQ,secA:hash(normalize(secAraw)),progress:{}});
     DB.setSession(email);
   } else {
     const u=DB.users()[email];
