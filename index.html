@@ -193,8 +193,13 @@ function setLang(l){ lang=l; localStorage.setItem('su_lang',l);
   document.getElementById('len').classList.toggle('active',l==='en');
   document.documentElement.lang=l; render(); }
 
-/* ====== CODE D'ACCÈS — change la valeur ci-dessous pour définir ton propre code ====== */
+/* ============================================================
+   ⚙️  CONFIGURATION DU SITE — modifie ces options à ta guise
+   ============================================================ */
+// Code d'accès demandé à l'entrée du site :
 const ACCESS_CODE = "SKILLYAM-2026";
+// Demander une question secrète à l'inscription (true = oui, false = non) :
+const REQUIRE_SECURITY_QUESTION = true;
 
 /* ====== LIEN EXCEPTIONNEL DE RÉINITIALISATION ======
    Donne aux personnes bloquées : l'URL de ton site suivie de  ?reset=RESET-2026
@@ -584,10 +589,10 @@ function renderAuth(){
      ${authMode==='signup'?`<label>${t('name')}</label><input id="f-name" autocomplete="given-name">`:''}
      <label>${t('email')}</label><input id="f-email" type="email" autocomplete="email">
      <label>${t('pwd')}</label><input id="f-pwd" type="password" autocomplete="current-password">
-     ${authMode==='signup'?`<label>${t('secQuestion')}</label><select id="f-secq" style="${selStyle}">${secOpts}</select><label>${t('secAnswer')}</label><input id="f-seca">`:''}
+     ${(authMode==='signup'&&REQUIRE_SECURITY_QUESTION)?`<label>${t('secQuestion')}</label><select id="f-secq" style="${selStyle}">${secOpts}</select><label>${t('secAnswer')}</label><input id="f-seca">`:''}
      <div class="msg err" id="auth-msg"></div>
      <button class="btn full" onclick="submitAuth()">${authMode==='login'?t('login'):t('signup')}</button>
-     ${authMode==='login'?`<p class="sub" style="margin-top:12px;text-align:center"><span class="link" onclick="startForgot()">${t('forgotPwd')}</span></p>`:''}
+     ${(authMode==='login'&&REQUIRE_SECURITY_QUESTION)?`<p class="sub" style="margin-top:12px;text-align:center"><span class="link" onclick="startForgot()">${t('forgotPwd')}</span></p>`:''}
      <p class="sub" style="margin-top:8px;text-align:center">
        ${authMode==='login'?t('noAccount'):t('haveAccount')}
        <span class="link" onclick="toggleAuth()">${authMode==='login'?t('signupNow'):t('loginNow')}</span>
@@ -679,10 +684,14 @@ function submitAuth(){
     if(pwd.length<6){msg.textContent=t('pwdShort');return;}
     const all=DB.users(); if(all[email]){msg.textContent=t('emailUsed');return;}
     const name=document.getElementById('f-name').value.trim();
-    const secQ=parseInt(document.getElementById('f-secq').value,10);
-    const secAraw=document.getElementById('f-seca').value.trim();
-    if(!secAraw){msg.textContent=t('fillAll');return;}
-    saveUser({email,name,pwd:hash(pwd),secQ:secQ,secA:hash(normalize(secAraw)),progress:{}});
+    const acc={email,name,pwd:hash(pwd),progress:{}};
+    if(REQUIRE_SECURITY_QUESTION){
+      const secQ=parseInt(document.getElementById('f-secq').value,10);
+      const secAraw=document.getElementById('f-seca').value.trim();
+      if(!secAraw){msg.textContent=t('fillAll');return;}
+      acc.secQ=secQ; acc.secA=hash(normalize(secAraw));
+    }
+    saveUser(acc);
     DB.setSession(email);
   } else {
     const u=DB.users()[email];
