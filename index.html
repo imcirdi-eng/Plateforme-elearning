@@ -108,6 +108,7 @@
   </header>
 
   <section id="view-gate"></section>
+  <section id="view-exreset"></section>
   <section id="view-auth"></section>
   <section id="view-dash" class="hidden"></section>
   <section id="view-test" class="hidden"></section>
@@ -146,7 +147,11 @@ const I18N = {
     resetTitle:"Réinitialiser le mot de passe", resetSub:"Entrez votre e-mail pour retrouver votre question secrète.",
     continueBtn:"Continuer", newPwd:"Nouveau mot de passe", resetBtn:"Réinitialiser",
     emailNotFound:"Aucun compte avec cet e-mail.", noSecQ:"Ce compte n'a pas de question secrète.",
-    wrongAnswer:"Réponse incorrecte.", pwdResetOk:"Mot de passe mis à jour ! Connectez-vous."
+    wrongAnswer:"Réponse incorrecte.", pwdResetOk:"Mot de passe mis à jour ! Connectez-vous.",
+    exResetTitle:"Réinitialisation exceptionnelle", exResetBtn:"Réinitialiser mon mot de passe",
+    exResetSub:"Lien spécial : entrez votre e-mail et un nouveau mot de passe. À ouvrir sur l'appareil où vous utilisez Skillyam.",
+    exResetNotFound:"Aucun compte trouvé sur cet appareil avec cet e-mail. Ouvrez ce lien sur l'appareil où le compte a été créé.",
+    exResetOk:"Mot de passe réinitialisé ! Vous pouvez vous connecter.", goLogin:"Aller à la connexion"
   },
   en:{
     tagline:"Build your skills at your own pace, on a path adapted to your level.",
@@ -174,7 +179,11 @@ const I18N = {
     resetTitle:"Reset password", resetSub:"Enter your email to retrieve your security question.",
     continueBtn:"Continue", newPwd:"New password", resetBtn:"Reset",
     emailNotFound:"No account with this email.", noSecQ:"This account has no security question.",
-    wrongAnswer:"Wrong answer.", pwdResetOk:"Password updated! Please sign in."
+    wrongAnswer:"Wrong answer.", pwdResetOk:"Password updated! Please sign in.",
+    exResetTitle:"Exceptional reset", exResetBtn:"Reset my password",
+    exResetSub:"Special link: enter your email and a new password. Open it on the device where you use Skillyam.",
+    exResetNotFound:"No account found on this device with that email. Open this link on the device where the account was created.",
+    exResetOk:"Password reset! You can sign in.", goLogin:"Go to sign in"
   }
 };
 let lang = localStorage.getItem('su_lang') || 'fr';
@@ -186,6 +195,20 @@ function setLang(l){ lang=l; localStorage.setItem('su_lang',l);
 
 /* ====== CODE D'ACCÈS — change la valeur ci-dessous pour définir ton propre code ====== */
 const ACCESS_CODE = "SKILLYAM-2026";
+
+/* ====== LIEN EXCEPTIONNEL DE RÉINITIALISATION ======
+   Donne aux personnes bloquées : l'URL de ton site suivie de  ?reset=RESET-2026
+   (ex. https://ton-site.netlify.app/?reset=RESET-2026). Change le code si tu veux. */
+const RESET_LINK_CODE = "RESET-2026";
+function isSpecialReset(){
+  try{
+    const p=new URLSearchParams(location.search);
+    if(p.get('reset')===RESET_LINK_CODE) return true;
+    const hp=new URLSearchParams((location.hash||'').replace(/^#/,''));
+    if(hp.get('reset')===RESET_LINK_CODE) return true;
+  }catch(e){}
+  return false;
+}
 
 /* Questions secrètes proposées à l'inscription (pour la réinitialisation du mot de passe) */
 const SECQ = [
@@ -504,12 +527,14 @@ function normalize(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[�
 /* ============ App state ============ */
 let st = { domain:null };
 function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
-function show(id){['view-gate','view-auth','view-dash','view-test','view-modules'].forEach(v=>document.getElementById(v).classList.toggle('hidden',v!==id));}
+function show(id){['view-gate','view-exreset','view-auth','view-dash','view-test','view-modules'].forEach(v=>document.getElementById(v).classList.toggle('hidden',v!==id));}
 function gatePassed(){ return localStorage.getItem('su_gate_ok')==='1'; }
 
 /* ============ Render dispatcher ============ */
 function render(){
   document.getElementById('foot').textContent = t('securityNote');
+  if(isSpecialReset() && !window._exResetDone){ renderExReset(); show('view-exreset');
+    document.getElementById('logoutBtn').classList.add('hidden'); document.getElementById('who').textContent=''; return; }
   const u=currentUser();
   const lo=document.getElementById('logoutBtn');
   lo.textContent=t('logout');
@@ -614,6 +639,36 @@ function doReset(){
   forgotUser.pwd=hash(np); saveUser(forgotUser);
   toast(t('pwdResetOk')); authMode='login'; renderAuth();
 }
+/* ---- Lien exceptionnel de réinitialisation ---- */
+function renderExReset(){
+  const v=document.getElementById('view-exreset');
+  v.innerHTML=`
+   <div class="card" style="max-width:440px;margin:40px auto">
+     <div class="logo" style="width:54px;height:54px;border-radius:16px;margin:0 auto 14px;font-size:24px">🔑</div>
+     <h1 style="text-align:center">${t('exResetTitle')}</h1>
+     <p class="sub" style="text-align:center">${t('exResetSub')}</p>
+     <label>${t('email')}</label><input id="xr-email" type="email">
+     <label>${t('newPwd')}</label><input id="xr-pwd" type="password">
+     <div class="msg err" id="xr-msg"></div>
+     <button class="btn full" onclick="doExReset()">${t('exResetBtn')}</button>
+   </div>`;
+}
+function doExReset(){
+  const email=(document.getElementById('xr-email').value||'').trim().toLowerCase();
+  const np=document.getElementById('xr-pwd').value||'';
+  const msg=document.getElementById('xr-msg');
+  const u=DB.users()[email];
+  if(!u){ msg.textContent=t('exResetNotFound'); return; }
+  if(np.length<6){ msg.textContent=t('pwdShort'); return; }
+  u.pwd=hash(np); saveUser(u);
+  document.getElementById('view-exreset').innerHTML=`
+   <div class="card" style="max-width:440px;margin:40px auto;text-align:center">
+     <div class="logo" style="width:54px;height:54px;border-radius:16px;margin:0 auto 14px;font-size:24px">✅</div>
+     <h1>${t('exResetOk')}</h1>
+     <button class="btn full" onclick="finishExReset()">${t('goLogin')}</button>
+   </div>`;
+}
+function finishExReset(){ window._exResetDone=true; render(); }
 function toggleAuth(){ authMode=authMode==='login'?'signup':'login'; renderAuth(); }
 function submitAuth(){
   const email=(document.getElementById('f-email').value||'').trim().toLowerCase();
