@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SkillUp — Plateforme d'entraînement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff5fb; --bg2:#fdeef8; --card:#ffffff; --card2:#fdf0f9;
+    --accent:#ff6fb5; --accent2:#a45cff; --ok:#1fb98a; --warn:#f59f3c; --err:#ff5c8a;
+    --text:#4a2a52; --muted:#a886b8; --line:#f6d9ee; --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Quicksand",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:500;
+    background:radial-gradient(1100px 650px at 85% -12%,#ffd9ef 0%,#f3e2ff 42%,#fff5fb 100%) fixed;color:var(--text);min-height:100vh}
+  h1,h2,h3,.brand{font-family:"Poppins","Quicksand",sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:24px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:.3px}
+  .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-weight:900;color:#fff}
+  .top-actions{display:flex;align-items:center;gap:10px}
+  .lang{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .lang button{background:none;border:none;color:var(--muted);padding:7px 12px;cursor:pointer;font-weight:700;font-size:13px}
+  .lang button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+  .who{font-size:13px;color:var(--muted)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:18px;
+    box-shadow:0 14px 44px rgba(214,120,190,.18)}
+  h1{font-size:26px;margin-bottom:8px}
+  h2{font-size:20px;margin-bottom:6px}
+  h3{font-size:16px;margin-bottom:6px}
+  p.sub{color:var(--muted);margin-bottom:18px;line-height:1.5}
+  label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+  input{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px}
+  input:focus{outline:none;border-color:var(--accent)}
+  button.btn{appearance:none;border:none;cursor:pointer;font-weight:700;font-size:15px;padding:12px 18px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transition:.15s transform}
+  button.btn:hover{transform:translateY(-1px)}
+  button.btn.full{width:100%;margin-top:18px}
+  button.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+  .link{color:var(--accent);cursor:pointer;font-weight:600}
+  .muted{color:var(--muted)}
+  .msg{font-size:13px;margin-top:10px;min-height:16px}
+  .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .domain{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:.15s;position:relative}
+  .domain:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .domain .ic{font-size:26px;margin-bottom:10px}
+  .domain h3{margin-bottom:4px}
+  .domain small{color:var(--muted)}
+  .badge{display:inline-block;font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;margin-top:10px}
+  .badge.none{background:#f7e3f2;color:var(--muted)}
+  .badge.deb{background:rgba(245,165,36,.16);color:var(--warn)}
+  .badge.int{background:rgba(39,192,138,.16);color:var(--ok)}
+  .bar{height:7px;background:var(--bg2);border-radius:999px;overflow:hidden;margin-top:12px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .q{margin-bottom:18px}
+  .q .opt{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--line);border-radius:12px;
+    padding:13px 15px;margin-top:9px;cursor:pointer;color:var(--text);font-size:15px;transition:.12s}
+  .q .opt:hover{border-color:var(--accent)}
+  .q .opt.sel{border-color:var(--accent);background:rgba(255,111,181,.14)}
+  .q .opt.correct{border-color:var(--ok);background:rgba(39,192,138,.14)}
+  .q .opt.wrong{border-color:var(--err);background:rgba(255,92,122,.14)}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .spacer{flex:1}
+  .pill{font-size:12px;font-weight:700;color:var(--muted);background:var(--bg2);padding:6px 11px;border-radius:999px;border:1px solid var(--line)}
+  .lesson{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;line-height:1.6}
+  .lesson ul{margin:8px 0 0 18px} .lesson li{margin:4px 0}
+  .module{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;background:var(--card2)}
+  .module .mhead{display:flex;align-items:center;gap:10px;cursor:pointer}
+  .check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:12px;flex-shrink:0}
+  .check.done{background:var(--ok);border-color:var(--ok);color:#06231a}
+  .result-big{text-align:center;padding:14px 0}
+  .result-big .score{font-size:46px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hidden{display:none!important}
+  .expl{font-size:13px;color:var(--muted);margin-top:8px;padding-left:4px;border-left:2px solid var(--accent)}
+  footer{ text-align:center;color:var(--muted);font-size:12px;padding:18px 0 30px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);
+    padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.3s;pointer-events:none}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">S</div> SkillUp</div>
+    <div class="top-actions">
+      <span class="who" id="who"></span>
+      <div class="lang">
+        <button id="lfr" class="active" onclick="setLang('fr')">FR</button>
+        <button id="len" onclick="setLang('en')">EN</button>
+      </div>
+      <button id="logoutBtn" class="btn ghost hidden" style="padding:7px 12px;font-size:13px" onclick="logout()"></button>
+    </div>
+  </header>
+
+  <!-- GATE (code d'accès) -->
+  <section id="view-gate"></section>
+
+  <!-- AUTH -->
+  <section id="view-auth"></section>
+
+  <!-- DASHBOARD -->
+  <section id="view-dash" class="hidden"></section>
+
+  <!-- TEST -->
+  <section id="view-test" class="hidden"></section>
+
+  <!-- MODULES -->
+  <section id="view-modules" class="hidden"></section>
+
+  <footer>SkillUp · <span id="foot"></span></footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ i18n ============ */
+const I18N = {
+  fr:{
+    tagline:"Montez en compétences à votre rythme, avec un parcours adapté à votre niveau.",
+    login:"Connexion", signup:"Créer un compte", email:"Adresse e-mail", pwd:"Mot de passe",
+    name:"Prénom", noAccount:"Pas encore de compte ?", haveAccount:"Déjà un compte ?",
+    signupNow:"Inscrivez-vous", loginNow:"Connectez-vous", logout:"Déconnexion",
+    welcome:"Bienvenue", chooseDomain:"Choisissez un domaine pour commencer",
+    notTested:"Niveau non évalué", level:"Niveau", startTest:"Passer le test de niveau",
+    retest:"Repasser le test", openModules:"Accéder aux modules", progress:"Progression",
+    back:"Retour", testTitle:"Test de niveau", q:"Question", validate:"Valider mes réponses",
+    yourScore:"Votre score", levelBeginner:"Débutant", levelInter:"Intermédiaire",
+    resultBeginnerMsg:"On commence par les fondamentaux pour bâtir des bases solides.",
+    resultInterMsg:"Vous maîtrisez les bases : place aux notions plus avancées.",
+    seeModules:"Voir mes modules adaptés", modulesOf:"Modules", lesson:"Leçon",
+    practice:"Exercices", markDone:"Marquer comme terminé", done:"Terminé", checkAns:"Vérifier",
+    correct:"Correct !", incorrect:"Pas tout à fait.", next:"Suivant",
+    answerAll:"Répondez à toutes les questions avant de valider.",
+    moduleDone:"Module terminé, bravo !", pwdShort:"Le mot de passe doit faire au moins 6 caractères.",
+    emailUsed:"Cet e-mail est déjà utilisé.", badLogin:"E-mail ou mot de passe incorrect.",
+    fillAll:"Merci de remplir tous les champs.", securityNote:"Vos données restent sur cet appareil (prototype).",
+    gateTitle:"Accès réservé", gateSub:"Entrez le code d'accès qui vous a été communiqué pour continuer.",
+    gateLabel:"Code d'accès", gateBtn:"Entrer", gateErr:"Code incorrect. Réessayez."
+  },
+  en:{
+    tagline:"Build your skills at your own pace, on a path adapted to your level.",
+    login:"Sign in", signup:"Create account", email:"Email address", pwd:"Password",
+    name:"First name", noAccount:"No account yet?", haveAccount:"Already have an account?",
+    signupNow:"Sign up", loginNow:"Sign in", logout:"Log out",
+    welcome:"Welcome", chooseDomain:"Pick a domain to get started",
+    notTested:"Level not assessed", level:"Level", startTest:"Take the placement test",
+    retest:"Retake the test", openModules:"Open modules", progress:"Progress",
+    back:"Back", testTitle:"Placement test", q:"Question", validate:"Submit my answers",
+    yourScore:"Your score", levelBeginner:"Beginner", levelInter:"Intermediate",
+    resultBeginnerMsg:"We'll start with fundamentals to build solid foundations.",
+    resultInterMsg:"You've got the basics: time for more advanced topics.",
+    seeModules:"See my adapted modules", modulesOf:"Modules", lesson:"Lesson",
+    practice:"Exercises", markDone:"Mark as complete", done:"Completed", checkAns:"Check",
+    correct:"Correct!", incorrect:"Not quite.", next:"Next",
+    answerAll:"Answer every question before submitting.",
+    moduleDone:"Module complete, well done!", pwdShort:"Password must be at least 6 characters.",
+    emailUsed:"This email is already in use.", badLogin:"Wrong email or password.",
+    fillAll:"Please fill in all fields.", securityNote:"Your data stays on this device (prototype).",
+    gateTitle:"Restricted access", gateSub:"Enter the access code you were given to continue.",
+    gateLabel:"Access code", gateBtn:"Enter", gateErr:"Wrong code. Try again."
+  }
+};
+
+/* ====== CODE D'ACCÈS — change la valeur ci-dessous pour définir ton propre code ====== */
+const ACCESS_CODE = "SKILLUP-2026";
+let lang = localStorage.getItem('su_lang') || 'fr';
+const t = k => (I18N[lang][k] ?? k);
+function setLang(l){ lang=l; localStorage.setItem('su_lang',l);
+  document.getElementById('lfr').classList.toggle('active',l==='fr');
+  document.getElementById('len').classList.toggle('active',l==='en');
+  document.documentElement.lang=l; render(); }
+
+/* ============ Content ============ */
+const DOMAINS = {
+  english:{ ic:"🗣️", name:{fr:"Anglais professionnel",en:"Business English"},
+    desc:{fr:"E-mails, réunions, vocabulaire métier",en:"Emails, meetings, business vocabulary"} },
+  compliance:{ ic:"⚖️", name:{fr:"Conformité / CFA",en:"Compliance / CFA"},
+    desc:{fr:"Éthique, déontologie, réglementation",en:"Ethics, conduct, regulation"} },
+  finance:{ ic:"🏦", name:{fr:"Assurance & Banque",en:"Insurance & Banking"},
+    desc:{fr:"Produits, notions clés du secteur",en:"Products, key sector concepts"} },
+  it:{ ic:"💻", name:{fr:"Informatique / Codage",en:"IT / Coding"},
+    desc:{fr:"Logique, bases du code",en:"Logic, coding fundamentals"} }
+};
+
+/* Each test question: difficulty e=easy(beginner) m=medium(intermediate) */
+const TESTS = {
+  english:[
+    {d:'e',q:{fr:"« I look forward to ___ from you. »",en:"« I look forward to ___ from you. »"},o:["hear","hearing","heard","hears"],a:1},
+    {d:'e',q:{fr:"Choisir la formule de politesse correcte pour finir un e-mail formel.",en:"Pick the correct closing for a formal email."},o:["Bye bye","Best regards","See ya","Cheers mate"],a:1},
+    {d:'e',q:{fr:"« Please find the report ___ . »",en:"« Please find the report ___ . »"},o:["attached","attach","attaching","attachment"],a:0},
+    {d:'m',q:{fr:"« We need to ___ the deadline to Friday. »",en:"« We need to ___ the deadline to Friday. »"},o:["push back","push down","push out of","push under"],a:0},
+    {d:'m',q:{fr:"En réunion, « let's circle back on this » signifie :",en:"In a meeting, “let's circle back on this” means:"},o:["Décider maintenant / Decide now","Y revenir plus tard / Return to it later","Annuler / Cancel","Voter / Vote"],a:1},
+    {d:'m',q:{fr:"« The figures are ___ with last quarter. »",en:"« The figures are ___ with last quarter. »"},o:["in line","on line","by line","at line"],a:0}
+  ],
+  compliance:[
+    {d:'e',q:{fr:"Que signifie « KYC » ?",en:"What does “KYC” stand for?"},o:["Know Your Customer","Keep Your Cash","Key Yield Control","Known Yearly Cost"],a:0},
+    {d:'e',q:{fr:"Un conflit d'intérêts doit d'abord être :",en:"A conflict of interest must first be:"},o:["Ignoré / Ignored","Divulgué / Disclosed","Monétisé / Monetised","Oublié / Forgotten"],a:1},
+    {d:'e',q:{fr:"« AML » concerne la lutte contre :",en:"“AML” refers to the fight against:"},o:["Le blanchiment / Money laundering","Le bruit / Noise","Les retards / Delays","Les emails / Emails"],a:0},
+    {d:'m',q:{fr:"Dans le CFA Code, l'intérêt du client passe :",en:"In the CFA Code, the client's interest comes:"},o:["Après l'employeur / After the employer","Avant l'intérêt personnel / Before personal interest","Après les marchés / After markets","Au même niveau / At the same level"],a:1},
+    {d:'m',q:{fr:"Le « material non-public information » ne doit pas servir à :",en:"“Material non-public information” must not be used to:"},o:["Former / Train","Trader / Trade on it","Archiver / Archive","Auditer / Audit"],a:1},
+    {d:'m',q:{fr:"La « muraille de Chine » (information barrier) sert à :",en:"A “Chinese wall” (information barrier) is used to:"},o:["Séparer des fonctions / Separate functions","Bloquer Internet / Block internet","Crypter / Encrypt","Recruter / Recruit"],a:0}
+  ],
+  finance:[
+    {d:'e',q:{fr:"Une « prime » d'assurance est :",en:"An insurance “premium” is:"},o:["Le montant payé par l'assuré / Amount paid by the insured","Un bonus salarial / A salary bonus","La franchise / The deductible","Un sinistre / A claim"],a:0},
+    {d:'e',q:{fr:"Le taux directeur est fixé par :",en:"The key interest rate is set by:"},o:["La banque centrale / The central bank","Le client / The client","Le courtier / The broker","Le notaire / The notary"],a:0},
+    {d:'e',q:{fr:"Un « sinistre » en assurance désigne :",en:"A “claim” in insurance refers to:"},o:["Un événement couvert / A covered event","Un dividende / A dividend","Un compte / An account","Un guichet / A counter"],a:0},
+    {d:'m',q:{fr:"La « franchise » est la part :",en:"The “deductible” is the share:"},o:["Payée par l'assureur / Paid by the insurer","Restant à la charge de l'assuré / Left to the insured","Du courtier / Of the broker","De l'État / Of the State"],a:1},
+    {d:'m',q:{fr:"Le ratio de solvabilité d'une banque mesure :",en:"A bank's solvency ratio measures:"},o:["Sa liquidité quotidienne / Daily liquidity","Sa capacité à absorber les pertes / Capacity to absorb losses","Son chiffre d'affaires / Its revenue","Son nombre d'agences / Branch count"],a:1},
+    {d:'m',q:{fr:"Un produit à « capital garanti » signifie :",en:"A “capital-guaranteed” product means:"},o:["Rendement fixe élevé / High fixed return","Le capital investi est protégé / Invested capital is protected","Aucun risque de marché jamais / Never any market risk","Liquidité immédiate / Instant liquidity"],a:1}
+  ],
+  it:[
+    {d:'e',q:{fr:"Une « variable » sert à :",en:"A “variable” is used to:"},o:["Stocker une valeur / Store a value","Éteindre l'ordinateur / Turn off the PC","Imprimer / Print","Compiler / Compile"],a:0},
+    {d:'e',q:{fr:"Que renvoie : 3 + 4 ?",en:"What does 3 + 4 return?"},o:["7","34","12","Erreur / Error"],a:0},
+    {d:'e',q:{fr:"« HTML » sert principalement à :",en:"“HTML” is mainly used to:"},o:["Structurer une page web / Structure a web page","Calculer des impôts / Compute taxes","Gérer une base / Manage a database","Sécuriser un réseau / Secure a network"],a:0},
+    {d:'m',q:{fr:"Une boucle « for » permet de :",en:"A “for” loop lets you:"},o:["Répéter des instructions / Repeat instructions","Déclarer une classe / Declare a class","Supprimer un fichier / Delete a file","Ouvrir un port / Open a port"],a:0},
+    {d:'m',q:{fr:"Que vaut la condition : (5 > 3) ?",en:"What is the value of: (5 > 3)?"},o:["true","false","5","null"],a:0},
+    {d:'m',q:{fr:"Une « fonction » sert surtout à :",en:"A “function” mainly serves to:"},o:["Réutiliser un bloc de code / Reuse a block of code","Colorer le texte / Color text","Augmenter la RAM / Add RAM","Créer un compte / Create an account"],a:0}
+  ]
+};
+
+/* Modules per domain & level. ex: practice questions {q,o,a,exp} */
+const MODULES = {
+  english:{
+    beginner:[
+      {title:{fr:"E-mails professionnels — les bases",en:"Professional emails — basics"},
+       lesson:{fr:"Un e-mail formel suit une structure simple : <b>salutation</b> (Dear…), <b>objet clair</b>, <b>corps concis</b>, <b>formule de clôture</b> (Best regards) et signature. Évitez l'argot et les abréviations.",
+               en:"A formal email follows a simple structure: <b>greeting</b> (Dear…), <b>clear subject</b>, <b>concise body</b>, <b>closing</b> (Best regards) and signature. Avoid slang and abbreviations."},
+       ex:[{q:{fr:"Meilleure salutation formelle :",en:"Best formal greeting:"},o:["Hey!","Dear Ms. Lopez,","Yo team","Hi hi"],a:1,exp:{fr:"« Dear + nom » est la norme formelle.",en:"“Dear + name” is the formal standard."}},
+           {q:{fr:"Clôture appropriée :",en:"Appropriate closing:"},o:["Best regards,","Later!","xoxo","TTYL"],a:0,exp:{fr:"« Best regards » convient à presque tout contexte pro.",en:"“Best regards” fits almost any professional context."}}]},
+      {title:{fr:"Vocabulaire de réunion",en:"Meeting vocabulary"},
+       lesson:{fr:"Expressions utiles : <b>to set up a meeting</b> (organiser), <b>agenda</b> (ordre du jour), <b>minutes</b> (compte-rendu), <b>action items</b> (tâches à faire), <b>to follow up</b> (faire le suivi).",
+               en:"Useful phrases: <b>to set up a meeting</b>, <b>agenda</b>, <b>minutes</b> (the written record), <b>action items</b>, <b>to follow up</b>."},
+       ex:[{q:{fr:"« The minutes » d'une réunion sont :",en:"The “minutes” of a meeting are:"},o:["Sa durée / Its length","Le compte-rendu écrit / The written record","Les retards / The delays","Les pauses / The breaks"],a:1,exp:{fr:"« Minutes » = compte-rendu, pas les minutes de temps.",en:"“Minutes” = the record, not units of time."}}]}
+    ],
+    intermediate:[
+      {title:{fr:"Nuance & diplomatie",en:"Hedging & diplomacy"},
+       lesson:{fr:"Pour adoucir un message : <b>I'm afraid…</b>, <b>It might be worth…</b>, <b>Could we possibly…</b>. Le conditionnel (would/could) rend la demande plus polie.",
+               en:"To soften a message: <b>I'm afraid…</b>, <b>It might be worth…</b>, <b>Could we possibly…</b>. The conditional (would/could) makes a request more polite."},
+       ex:[{q:{fr:"Demande la plus diplomate :",en:"Most diplomatic request:"},o:["Send it now.","Could you possibly send it today?","Send it or else.","I need it. Now."],a:1,exp:{fr:"« Could you possibly… » est la forme la plus polie.",en:"“Could you possibly…” is the most polite form."}},
+           {q:{fr:"« I'm afraid we can't… » exprime :",en:"“I'm afraid we can't…” expresses:"},o:["La peur / Fear","Un refus poli / A polite refusal","La joie / Joy","Un ordre / An order"],a:1,exp:{fr:"C'est une façon courtoise d'annoncer un refus.",en:"It's a courteous way to deliver a refusal."}}]},
+      {title:{fr:"Négociation & idiomes business",en:"Negotiation & business idioms"},
+       lesson:{fr:"<b>Win-win</b> (gagnant-gagnant), <b>ballpark figure</b> (estimation), <b>to touch base</b> (reprendre contact), <b>the bottom line</b> (l'essentiel / le résultat net).",
+               en:"<b>Win-win</b>, <b>ballpark figure</b> (rough estimate), <b>to touch base</b> (reconnect), <b>the bottom line</b> (the key point / net result)."},
+       ex:[{q:{fr:"« A ballpark figure » est :",en:"“A ballpark figure” is:"},o:["Un chiffre exact / An exact number","Une estimation approximative / A rough estimate","Un stade / A stadium","Une perte / A loss"],a:1,exp:{fr:"Idiome = ordre de grandeur approximatif.",en:"Idiom = an approximate order of magnitude."}}]}
+    ]
+  },
+  compliance:{
+    beginner:[
+      {title:{fr:"Les piliers de la conformité",en:"Pillars of compliance"},
+       lesson:{fr:"La conformité repose sur : <b>KYC</b> (connaître son client), <b>AML</b> (anti-blanchiment), la <b>gestion des conflits d'intérêts</b> et la <b>protection des données</b>. Objectif : prévenir les risques légaux et de réputation.",
+               en:"Compliance rests on: <b>KYC</b> (know your customer), <b>AML</b> (anti-money-laundering), <b>conflict-of-interest management</b> and <b>data protection</b>. Goal: prevent legal and reputational risk."},
+       ex:[{q:{fr:"Le KYC vise surtout à :",en:"KYC mainly aims to:"},o:["Vérifier l'identité du client / Verify client identity","Vendre plus / Sell more","Réduire les coûts / Cut costs","Recruter / Recruit"],a:0,exp:{fr:"Identifier et vérifier le client est le cœur du KYC.",en:"Identifying and verifying the client is the core of KYC."}},
+           {q:{fr:"Un signe d'alerte de blanchiment :",en:"A money-laundering red flag:"},o:["Paiement régulier par virement / Regular bank transfer","Dépôts fractionnés en espèces inexpliqués / Unexplained structured cash deposits","Facture détaillée / Itemised invoice","RIB fourni / IBAN provided"],a:1,exp:{fr:"Le fractionnement (« structuring ») est un signal classique.",en:"Structuring is a classic red flag."}}]},
+      {title:{fr:"Conflits d'intérêts",en:"Conflicts of interest"},
+       lesson:{fr:"Un conflit existe quand un intérêt personnel peut influencer une décision professionnelle. Règle d'or : <b>divulguer</b>, puis gérer (abstention, muraille de Chine). Ne jamais dissimuler.",
+               en:"A conflict exists when a personal interest could influence a professional decision. Golden rule: <b>disclose</b>, then manage (recusal, information barrier). Never conceal."},
+       ex:[{q:{fr:"Première bonne réaction face à un conflit :",en:"First correct reaction to a conflict:"},o:["Le déclarer / Disclose it","Le cacher / Hide it","En profiter / Exploit it","Démissionner / Resign"],a:0,exp:{fr:"La divulgation est la première étape exigée.",en:"Disclosure is the required first step."}}]}
+    ],
+    intermediate:[
+      {title:{fr:"CFA — Code of Ethics & Standards",en:"CFA — Code of Ethics & Standards"},
+       lesson:{fr:"Le CFA Institute impose 6 principes, dont la <b>primauté de l'intégrité des marchés</b> et de l'intérêt du client <b>avant</b> l'intérêt personnel ou de l'employeur. Les Standards couvrent professionnalisme, marchés, devoirs envers les clients et conflits.",
+               en:"CFA Institute sets 6 principles, including the <b>primacy of market integrity</b> and putting the client's interest <b>before</b> personal or employer interest. The Standards cover professionalism, markets, duties to clients and conflicts."},
+       ex:[{q:{fr:"Selon le Code CFA, l'ordre de priorité est :",en:"Per the CFA Code, the priority order is:"},o:["Soi > Employeur > Client","Client & intégrité du marché d'abord / Client & market integrity first","Employeur d'abord / Employer first","Aucun ordre / No order"],a:1,exp:{fr:"L'intégrité du marché et le client priment.",en:"Market integrity and the client come first."}},
+           {q:{fr:"Utiliser une information privilégiée pour trader est :",en:"Trading on inside (material non-public) information is:"},o:["Autorisé si discret / Allowed if discreet","Interdit / Prohibited","Recommandé / Recommended","Neutre / Neutral"],a:1,exp:{fr:"C'est une violation grave (Standard II-A).",en:"It's a serious violation (Standard II-A)."}}]},
+      {title:{fr:"Reporting & escalade",en:"Reporting & escalation"},
+       lesson:{fr:"Tout collaborateur doit savoir <b>signaler</b> un manquement via les canaux internes (compliance officer, whistleblowing). Documenter les faits et préserver les preuves. La non-déclaration peut être sanctionnée.",
+               en:"Every employee must know how to <b>report</b> a breach through internal channels (compliance officer, whistleblowing). Document facts and preserve evidence. Failure to report can be sanctioned."},
+       ex:[{q:{fr:"Face à un manquement avéré, il faut :",en:"Facing a confirmed breach, you should:"},o:["Le signaler en interne / Report it internally","Le garder pour soi / Keep it quiet","Le publier sur les réseaux / Post it online","Attendre 1 an / Wait a year"],a:0,exp:{fr:"Le signalement interne documenté est la bonne voie.",en:"Documented internal reporting is the correct path."}}]}
+    ]
+  },
+  finance:{
+    beginner:[
+      {title:{fr:"Notions clés de l'assurance",en:"Insurance fundamentals"},
+       lesson:{fr:"Vocabulaire de base : <b>prime</b> (ce que paie l'assuré), <b>franchise</b> (reste à charge), <b>sinistre</b> (événement couvert), <b>garantie</b> (ce qui est couvert), <b>exclusion</b> (ce qui ne l'est pas).",
+               en:"Core vocabulary: <b>premium</b> (what the insured pays), <b>deductible</b> (out-of-pocket share), <b>claim</b> (covered event), <b>coverage</b> (what's protected), <b>exclusion</b> (what isn't)."},
+       ex:[{q:{fr:"La franchise est :",en:"The deductible is:"},o:["Ce que paie l'assureur / What the insurer pays","Ce qui reste à la charge de l'assuré / What the insured pays out of pocket","Une taxe / A tax","Un bonus / A bonus"],a:1,exp:{fr:"La franchise reste à la charge de l'assuré.",en:"The deductible stays with the insured."}},
+           {q:{fr:"« Exclusion » désigne :",en:"“Exclusion” refers to:"},o:["Un risque non couvert / A non-covered risk","Une réduction / A discount","Un remboursement / A refund","Un client VIP / A VIP client"],a:0,exp:{fr:"Les exclusions listent ce qui n'est pas garanti.",en:"Exclusions list what is not covered."}}]},
+      {title:{fr:"La banque au quotidien",en:"Everyday banking"},
+       lesson:{fr:"<b>Compte courant</b> vs <b>compte épargne</b>, <b>crédit</b> (prêt à rembourser avec intérêts), <b>taux</b> (coût de l'argent), <b>découvert</b> (solde négatif autorisé ou non). La banque centrale fixe le taux directeur.",
+               en:"<b>Current account</b> vs <b>savings account</b>, <b>credit</b> (a loan repaid with interest), <b>rate</b> (cost of money), <b>overdraft</b> (authorised or not). The central bank sets the key rate."},
+       ex:[{q:{fr:"Le taux directeur est fixé par :",en:"The key rate is set by:"},o:["La banque centrale / The central bank","Le client / The client","Le commerçant / The merchant","L'assureur / The insurer"],a:0,exp:{fr:"C'est un outil de politique monétaire.",en:"It's a monetary-policy tool."}}]}
+    ],
+    intermediate:[
+      {title:{fr:"Produits d'épargne & risque",en:"Savings products & risk"},
+       lesson:{fr:"Arbitrage <b>rendement / risque / liquidité</b>. Un produit à <b>capital garanti</b> protège la mise mais rapporte moins ; les <b>unités de compte</b> peuvent plus rapporter mais ne sont pas garanties. La diversification réduit le risque.",
+               en:"The <b>return / risk / liquidity</b> trade-off. A <b>capital-guaranteed</b> product protects the principal but pays less; <b>unit-linked</b> funds may pay more but aren't guaranteed. Diversification reduces risk."},
+       ex:[{q:{fr:"« Capital garanti » implique généralement :",en:"“Capital-guaranteed” usually implies:"},o:["Rendement élevé / High return","Protection du capital, rendement modéré / Principal protected, moderate return","Aucune fiscalité / No taxes","Liquidité illimitée / Unlimited liquidity"],a:1,exp:{fr:"Sécurité du capital = rendement plus modéré.",en:"Capital safety = a more moderate return."}},
+           {q:{fr:"La diversification sert à :",en:"Diversification serves to:"},o:["Augmenter les frais / Increase fees","Réduire le risque global / Reduce overall risk","Garantir un gain / Guarantee a gain","Éviter l'impôt / Avoid tax"],a:1,exp:{fr:"Répartir les actifs lisse le risque.",en:"Spreading assets smooths risk."}}]},
+      {title:{fr:"Solvabilité & réglementation",en:"Solvency & regulation"},
+       lesson:{fr:"Les banques sont soumises à des <b>ratios de fonds propres</b> (Bâle III) ; les assureurs à <b>Solvabilité II</b>. Ces règles imposent un coussin de capital pour absorber les pertes et protéger les clients.",
+               en:"Banks face <b>capital ratios</b> (Basel III); insurers face <b>Solvency II</b>. These rules require a capital buffer to absorb losses and protect clients."},
+       ex:[{q:{fr:"Un ratio de solvabilité élevé indique :",en:"A high solvency ratio indicates:"},o:["Plus de capacité à absorber les pertes / More loss-absorbing capacity","Plus de clients / More clients","Plus d'agences / More branches","Moins d'impôts / Less tax"],a:0,exp:{fr:"Plus de fonds propres = plus de résilience.",en:"More own funds = more resilience."}}]}
+    ]
+  },
+  it:{
+    beginner:[
+      {title:{fr:"Variables & types",en:"Variables & types"},
+       lesson:{fr:"Une <b>variable</b> stocke une valeur sous un nom. Types courants : <b>nombre</b> (42), <b>texte/string</b> (\"bonjour\"), <b>booléen</b> (true/false). Exemple : <code>age = 30</code>.",
+               en:"A <b>variable</b> stores a value under a name. Common types: <b>number</b> (42), <b>string</b> (\"hello\"), <b>boolean</b> (true/false). Example: <code>age = 30</code>."},
+       ex:[{q:{fr:"\"Paris\" est de type :",en:"\"Paris\" is of type:"},o:["Nombre / Number","Texte (string) / String","Booléen / Boolean","Fonction / Function"],a:1,exp:{fr:"Entre guillemets = chaîne de caractères.",en:"In quotes = a string."}},
+           {q:{fr:"true / false est un :",en:"true / false is a:"},o:["String","Booléen / Boolean","Nombre / Number","Tableau / Array"],a:1,exp:{fr:"Deux valeurs logiques : le booléen.",en:"Two logical values: a boolean."}}]},
+      {title:{fr:"Conditions (if / else)",en:"Conditions (if / else)"},
+       lesson:{fr:"Une <b>condition</b> exécute du code selon qu'un test est vrai ou faux : <code>if (age >= 18) { ... } else { ... }</code>. Opérateurs : <code>></code>, <code><</code>, <code>==</code> (égal), <code>!=</code> (différent).",
+               en:"A <b>condition</b> runs code depending on whether a test is true or false: <code>if (age >= 18) { ... } else { ... }</code>. Operators: <code>></code>, <code><</code>, <code>==</code> (equal), <code>!=</code> (not equal)."},
+       ex:[{q:{fr:"Que vaut (10 == 10) ?",en:"What is (10 == 10)?"},o:["true","false","10","null"],a:0,exp:{fr:"Les deux valeurs sont égales → true.",en:"Both values are equal → true."}}]}
+    ],
+    intermediate:[
+      {title:{fr:"Boucles",en:"Loops"},
+       lesson:{fr:"Une <b>boucle</b> répète des instructions. <code>for (i=0; i<5; i++) { ... }</code> s'exécute 5 fois. Utile pour parcourir des listes sans répéter le code.",
+               en:"A <b>loop</b> repeats instructions. <code>for (i=0; i<5; i++) { ... }</code> runs 5 times. Useful to go through lists without repeating code."},
+       ex:[{q:{fr:"Combien de fois s'exécute for(i=0;i<3;i++) ?",en:"How many times does for(i=0;i<3;i++) run?"},o:["2","3","4","Infini / Infinite"],a:1,exp:{fr:"i = 0,1,2 → 3 itérations.",en:"i = 0,1,2 → 3 iterations."}},
+           {q:{fr:"Une boucle infinie arrive quand :",en:"An infinite loop happens when:"},o:["La condition reste vraie / The condition stays true","On ferme la page / You close the page","On utilise un string / You use a string","Jamais / Never"],a:0,exp:{fr:"Si la condition n'est jamais fausse, ça ne s'arrête pas.",en:"If the condition never becomes false, it never stops."}}]},
+      {title:{fr:"Fonctions",en:"Functions"},
+       lesson:{fr:"Une <b>fonction</b> regroupe du code réutilisable, avec des <b>paramètres</b> en entrée et une <b>valeur de retour</b> en sortie : <code>function add(a,b){ return a+b; }</code>. Appel : <code>add(2,3) → 5</code>.",
+               en:"A <b>function</b> bundles reusable code, with <b>parameters</b> as input and a <b>return value</b> as output: <code>function add(a,b){ return a+b; }</code>. Call: <code>add(2,3) → 5</code>."},
+       ex:[{q:{fr:"add(4,5) renvoie :",en:"add(4,5) returns:"},o:["9","45","20","Erreur / Error"],a:0,exp:{fr:"La fonction additionne : 4+5 = 9.",en:"The function adds: 4+5 = 9."}}]}
+    ]
+  }
+};
+
+/* ============ Storage / auth (prototype) ============ */
+const DB = {
+  users(){ return JSON.parse(localStorage.getItem('su_users')||'{}'); },
+  saveUsers(u){ localStorage.setItem('su_users',JSON.stringify(u)); },
+  session(){ return localStorage.getItem('su_session'); },
+  setSession(e){ e?localStorage.setItem('su_session',e):localStorage.removeItem('su_session'); }
+};
+// lightweight hash (prototype only — not cryptographic)
+function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return ''+h;}
+function currentUser(){ const e=DB.session(); if(!e) return null; return DB.users()[e]||null; }
+function saveUser(u){ const all=DB.users(); all[u.email]=u; DB.saveUsers(all); }
+
+/* ============ App state ============ */
+let st = { domain:null };
+
+function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function show(id){['view-gate','view-auth','view-dash','view-test','view-modules'].forEach(v=>document.getElementById(v).classList.toggle('hidden',v!==id));}
+function gatePassed(){ return localStorage.getItem('su_gate_ok')==='1'; }
+
+/* ============ Render dispatcher ============ */
+function render(){
+  document.getElementById('foot').textContent = t('securityNote');
+  const u=currentUser();
+  const lo=document.getElementById('logoutBtn');
+  lo.textContent=t('logout');
+  lo.classList.toggle('hidden',!u);
+  document.getElementById('who').textContent = u ? (t('welcome')+', '+u.name) : '';
+  if(!u){
+    if(!gatePassed()){ renderGate(); show('view-gate'); return; }
+    renderAuth(); show('view-auth'); return;
+  }
+  if(st.view==='test'){ renderTest(); show('view-test'); }
+  else if(st.view==='modules'){ renderModules(); show('view-modules'); }
+  else { renderDash(); show('view-dash'); }
+}
+
+/* ============ Gate view (code d'accès) ============ */
+function renderGate(){
+  const v=document.getElementById('view-gate');
+  v.innerHTML=`
+   <div class="card" style="max-width:420px;margin:40px auto;text-align:center">
+     <div class="logo" style="width:54px;height:54px;border-radius:16px;margin:0 auto 14px;font-size:24px">🔒</div>
+     <h1>${t('gateTitle')}</h1>
+     <p class="sub">${t('gateSub')}</p>
+     <input id="g-code" placeholder="••••••" style="text-align:center;letter-spacing:2px;font-weight:700"
+       onkeydown="if(event.key==='Enter')submitGate()">
+     <div class="msg err" id="gate-msg"></div>
+     <button class="btn full" onclick="submitGate()">${t('gateBtn')}</button>
+   </div>`;
+  setTimeout(()=>{const el=document.getElementById('g-code');el&&el.focus&&el.focus();},0);
+}
+function submitGate(){
+  const val=(document.getElementById('g-code').value||'').trim();
+  if(val.toUpperCase()===ACCESS_CODE.toUpperCase()){
+    localStorage.setItem('su_gate_ok','1'); render();
+  } else {
+    document.getElementById('gate-msg').textContent=t('gateErr');
+  }
+}
+
+/* ============ Auth view ============ */
+let authMode='login';
+function renderAuth(){
+  const v=document.getElementById('view-auth');
+  v.innerHTML=`
+   <div class="card" style="max-width:440px;margin:30px auto">
+     <h1>${authMode==='login'?t('login'):t('signup')}</h1>
+     <p class="sub">${t('tagline')}</p>
+     ${authMode==='signup'?`<label>${t('name')}</label><input id="f-name" autocomplete="given-name">`:''}
+     <label>${t('email')}</label><input id="f-email" type="email" autocomplete="email">
+     <label>${t('pwd')}</label><input id="f-pwd" type="password" autocomplete="current-password">
+     <div class="msg err" id="auth-msg"></div>
+     <button class="btn full" onclick="submitAuth()">${authMode==='login'?t('login'):t('signup')}</button>
+     <p class="sub" style="margin-top:16px;text-align:center">
+       ${authMode==='login'?t('noAccount'):t('haveAccount')}
+       <span class="link" onclick="toggleAuth()">${authMode==='login'?t('signupNow'):t('loginNow')}</span>
+     </p>
+   </div>`;
+}
+function toggleAuth(){ authMode=authMode==='login'?'signup':'login'; renderAuth(); }
+function submitAuth(){
+  const email=(document.getElementById('f-email').value||'').trim().toLowerCase();
+  const pwd=document.getElementById('f-pwd').value||'';
+  const msg=document.getElementById('auth-msg');
+  if(!email||!pwd||(authMode==='signup'&&!document.getElementById('f-name').value.trim())){msg.textContent=t('fillAll');return;}
+  if(authMode==='signup'){
+    if(pwd.length<6){msg.textContent=t('pwdShort');return;}
+    const all=DB.users(); if(all[email]){msg.textContent=t('emailUsed');return;}
+    const name=document.getElementById('f-name').value.trim();
+    saveUser({email,name,pwd:hash(pwd),progress:{}});
+    DB.setSession(email);
+  } else {
+    const u=DB.users()[email];
+    if(!u||u.pwd!==hash(pwd)){msg.textContent=t('badLogin');return;}
+    DB.setSession(email);
+  }
+  st={domain:null,view:'dash'}; render();
+}
+function logout(){ DB.setSession(null); st={domain:null}; render(); }
+
+/* ============ Dashboard ============ */
+function renderDash(){
+  const u=currentUser();
+  const v=document.getElementById('view-dash');
+  let cards='';
+  for(const key in DOMAINS){
+    const d=DOMAINS[key]; const p=u.progress[key];
+    let badge=`<span class="badge none">${t('notTested')}</span>`, barHtml='', cta=t('startTest');
+    if(p&&p.level){
+      const lvl = p.level==='beginner'?t('levelBeginner'):t('levelInter');
+      const cls = p.level==='beginner'?'deb':'int';
+      badge=`<span class="badge ${cls}">${t('level')}: ${lvl}</span>`;
+      const pct=moduleProgress(key,p.level);
+      barHtml=`<div class="bar"><i style="width:${pct}%"></i></div><small class="muted">${t('progress')}: ${pct}%</small>`;
+      cta=t('openModules');
+    }
+    cards+=`<div class="domain" onclick="enterDomain('${key}')">
+       <div class="ic">${d.ic}</div>
+       <h3>${d.name[lang]}</h3><small>${d.desc[lang]}</small><br>${badge}${barHtml}
+     </div>`;
+  }
+  v.innerHTML=`<div class="card">
+     <h1>${t('welcome')}, ${u.name} 👋</h1>
+     <p class="sub">${t('chooseDomain')}</p>
+     <div class="grid">${cards}</div>
+   </div>`;
+}
+function enterDomain(key){
+  st.domain=key; const u=currentUser(); const p=u.progress[key];
+  if(p&&p.level){ st.view='modules'; } else { st.view='test'; st.answers={}; st.submitted=false; }
+  render();
+}
+
+/* ============ Test view ============ */
+function renderTest(){
+  const key=st.domain, d=DOMAINS[key], qs=TESTS[key];
+  st.answers=st.answers||{};
+  const v=document.getElementById('view-test');
+  let body='';
+  qs.forEach((item,i)=>{
+    let opts='';
+    item.o.forEach((o,j)=>{
+      let cls='opt';
+      if(st.submitted){ if(j===item.a)cls+=' correct'; else if(st.answers[i]===j)cls+=' wrong'; }
+      else if(st.answers[i]===j)cls+=' sel';
+      opts+=`<button class="${cls}" ${st.submitted?'disabled':''} onclick="pick(${i},${j})">${o}</button>`;
+    });
+    body+=`<div class="q"><b>${t('q')} ${i+1}.</b> ${item.q[lang]}${opts}</div>`;
+  });
+  let footer;
+  if(st.submitted){
+    const sc=scoreTest(); const lvl=sc.pct>=60?'intermediate':'beginner';
+    footer=`<div class="result-big">
+       <div class="score">${sc.correct}/${sc.total}</div>
+       <p class="sub">${t('yourScore')} — ${sc.pct}%</p>
+       <span class="badge ${lvl==='beginner'?'deb':'int'}" style="font-size:14px">${t('level')}: ${lvl==='beginner'?t('levelBeginner'):t('levelInter')}</span>
+       <p class="sub" style="margin-top:14px">${lvl==='beginner'?t('resultBeginnerMsg'):t('resultInterMsg')}</p>
+       <button class="btn" onclick="finishTest()">${t('seeModules')}</button>
+     </div>`;
+  } else {
+    footer=`<button class="btn full" onclick="submitTest()">${t('validate')}</button>`;
+  }
+  v.innerHTML=`<div class="card">
+     <div class="row"><span class="pill">${d.ic} ${d.name[lang]}</span><div class="spacer"></div>
+       <span class="link" onclick="goDash()">← ${t('back')}</span></div>
+     <h1 style="margin-top:14px">${t('testTitle')}</h1>
+     <p class="sub">${d.desc[lang]}</p>${body}${footer}</div>`;
+}
+function pick(i,j){ if(st.submitted)return; st.answers[i]=j; renderTest(); }
+function scoreTest(){ const qs=TESTS[st.domain]; let c=0; qs.forEach((it,i)=>{if(st.answers[i]===it.a)c++;});
+  return {correct:c,total:qs.length,pct:Math.round(c/qs.length*100)}; }
+function submitTest(){
+  const qs=TESTS[st.domain];
+  if(Object.keys(st.answers).length<qs.length){ toast(t('answerAll')); return; }
+  st.submitted=true; renderTest();
+}
+function finishTest(){
+  const sc=scoreTest(); const lvl=sc.pct>=60?'intermediate':'beginner';
+  const u=currentUser(); u.progress[st.domain]={level:lvl,score:sc.pct,modules:{}}; saveUser(u);
+  st.view='modules'; render();
+}
+function goDash(){ st.view='dash'; st.domain=null; render(); }
+
+/* ============ Modules view ============ */
+function moduleProgress(key,level){
+  const u=currentUser(); const p=u.progress[key]; if(!p)return 0;
+  const mods=MODULES[key][level]; const done=p.modules?Object.values(p.modules).filter(Boolean).length:0;
+  return Math.round(done/mods.length*100);
+}
+function renderModules(){
+  const key=st.domain, d=DOMAINS[key], u=currentUser(), p=u.progress[key];
+  const level=p.level, mods=MODULES[key][level];
+  const v=document.getElementById('view-modules');
+  let list='';
+  mods.forEach((m,mi)=>{
+    const done=p.modules&&p.modules[mi];
+    let ex='';
+    m.ex.forEach((e,ei)=>{
+      let opts='';
+      e.o.forEach((o,j)=>{ opts+=`<button class="opt" onclick="answerEx(${mi},${ei},${j})" id="ex-${mi}-${ei}-${j}">${o}</button>`; });
+      ex+=`<div class="q" style="margin-top:14px"><b>${e.q[lang]}</b>${opts}<div class="expl hidden" id="exp-${mi}-${ei}"></div></div>`;
+    });
+    list+=`<div class="module">
+       <div class="mhead" onclick="toggleModule(${mi})">
+         <div class="check ${done?'done':''}" id="chk-${mi}">${done?'✓':''}</div>
+         <h3 style="margin:0">${m.title[lang]}</h3>
+       </div>
+       <div id="mbody-${mi}" class="${st.openModule===mi?'':'hidden'}">
+         <div class="lesson"><b>${t('lesson')}</b><br>${m.lesson[lang]}</div>
+         <h3>${t('practice')}</h3>${ex}
+         <button class="btn ghost" style="margin-top:14px" onclick="markDone(${mi})">${done?('✓ '+t('done')):t('markDone')}</button>
+       </div>
+     </div>`;
+  });
+  const lvlLabel = level==='beginner'?t('levelBeginner'):t('levelInter');
+  v.innerHTML=`<div class="card">
+     <div class="row"><span class="pill">${d.ic} ${d.name[lang]}</span>
+       <span class="badge ${level==='beginner'?'deb':'int'}">${t('level')}: ${lvlLabel}</span>
+       <div class="spacer"></div><span class="link" onclick="goDash()">← ${t('back')}</span></div>
+     <h1 style="margin-top:14px">${t('modulesOf')} — ${d.name[lang]}</h1>
+     <div class="bar" style="max-width:320px"><i style="width:${moduleProgress(key,level)}%"></i></div>
+     <p class="sub">${t('progress')}: ${moduleProgress(key,level)}%</p>
+     ${list}
+     <div class="row" style="margin-top:6px">
+       <button class="btn ghost" onclick="retest()">↻ ${t('retest')}</button>
+     </div>
+   </div>`;
+}
+function toggleModule(mi){ st.openModule = st.openModule===mi?null:mi; renderModules(); }
+function answerEx(mi,ei,j){
+  const e=MODULES[st.domain][currentUser().progress[st.domain].level][mi].ex[ei];
+  for(let k=0;k<e.o.length;k++){
+    const el=document.getElementById(`ex-${mi}-${ei}-${k}`); if(!el)continue;
+    el.classList.remove('correct','wrong');
+    if(k===e.a)el.classList.add('correct'); else if(k===j)el.classList.add('wrong');
+    el.setAttribute('disabled','');
+  }
+  const exp=document.getElementById(`exp-${mi}-${ei}`);
+  exp.classList.remove('hidden');
+  exp.innerHTML=(j===e.a?('✅ '+t('correct')):('❌ '+t('incorrect')))+' '+(e.exp?e.exp[lang]:'');
+}
+function markDone(mi){
+  const u=currentUser(); const p=u.progress[st.domain]; p.modules=p.modules||{};
+  p.modules[mi]=true; saveUser(u); toast(t('moduleDone')); renderModules();
+}
+function retest(){ st.view='test'; st.answers={}; st.submitted=false; render(); }
+
+/* ============ boot ============ */
+setLang(lang);
+</script>
+</body>
+</html>
