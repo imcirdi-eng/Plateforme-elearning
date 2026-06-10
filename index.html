@@ -4,25 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>SkillUp — Plateforme d'entraînement</title>
+<title>Skillyam — Plateforme d'entraînement</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#fff5fb; --bg2:#fdeef8; --card:#ffffff; --card2:#fdf0f9;
-    --accent:#ff6fb5; --accent2:#a45cff; --ok:#1fb98a; --warn:#f59f3c; --err:#ff5c8a;
+    --accent:#ff2e9a; --accent2:#ff7ec9; --ok:#1fb98a; --warn:#f59f3c; --err:#ff5c8a;
     --text:#4a2a52; --muted:#a886b8; --line:#f6d9ee; --radius:20px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"Quicksand",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:500;
-    background:radial-gradient(1100px 650px at 85% -12%,#ffd9ef 0%,#f3e2ff 42%,#fff5fb 100%) fixed;color:var(--text);min-height:100vh}
+    background:radial-gradient(1100px 650px at 85% -12%,#ffd0ea 0%,#f4e2ff 42%,#fff5fb 100%) fixed;color:var(--text);min-height:100vh}
   h1,h2,h3,.brand{font-family:"Poppins","Quicksand",sans-serif}
   .wrap{max-width:960px;margin:0 auto;padding:24px}
   header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:.3px}
-  .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
-    display:grid;place-items:center;font-weight:900;color:#fff}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:.3px}
+  .logo{position:relative;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-weight:900;color:#fff;font-size:19px;box-shadow:0 6px 18px rgba(255,46,154,.35)}
+  .logo .spark{position:absolute;top:-7px;right:-7px;font-size:15px;color:#ffd36e;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
   .top-actions{display:flex;align-items:center;gap:10px}
   .lang{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .lang button{background:none;border:none;color:var(--muted);padding:7px 12px;cursor:pointer;font-weight:700;font-size:13px}
@@ -35,14 +36,15 @@
   h3{font-size:16px;margin-bottom:6px}
   p.sub{color:var(--muted);margin-bottom:18px;line-height:1.5}
   label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
-  input{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px}
+  input{width:100%;padding:12px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px;font-family:inherit}
   input:focus{outline:none;border-color:var(--accent)}
   button.btn{appearance:none;border:none;cursor:pointer;font-weight:700;font-size:15px;padding:12px 18px;border-radius:12px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transition:.15s transform}
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transition:.15s transform;font-family:inherit}
   button.btn:hover{transform:translateY(-1px)}
   button.btn.full{width:100%;margin-top:18px}
+  button.btn.sm{padding:10px 14px;font-size:14px}
   button.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
-  .link{color:var(--accent);cursor:pointer;font-weight:600}
+  .link{color:var(--accent);cursor:pointer;font-weight:700}
   .muted{color:var(--muted)}
   .msg{font-size:13px;margin-top:10px;min-height:16px}
   .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
@@ -54,22 +56,29 @@
   .domain small{color:var(--muted)}
   .badge{display:inline-block;font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;margin-top:10px}
   .badge.none{background:#f7e3f2;color:var(--muted)}
-  .badge.deb{background:rgba(245,165,36,.16);color:var(--warn)}
-  .badge.int{background:rgba(39,192,138,.16);color:var(--ok)}
+  .badge.deb{background:rgba(245,159,60,.16);color:var(--warn)}
+  .badge.int{background:rgba(31,185,138,.16);color:var(--ok)}
+  .badge.tag{background:rgba(255,46,154,.12);color:var(--accent);margin:0}
   .bar{height:7px;background:var(--bg2);border-radius:999px;overflow:hidden;margin-top:12px}
   .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .q{margin-bottom:18px}
   .q .opt{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--line);border-radius:12px;
-    padding:13px 15px;margin-top:9px;cursor:pointer;color:var(--text);font-size:15px;transition:.12s}
+    padding:13px 15px;margin-top:9px;cursor:pointer;color:var(--text);font-size:15px;transition:.12s;font-family:inherit}
   .q .opt:hover{border-color:var(--accent)}
-  .q .opt.sel{border-color:var(--accent);background:rgba(255,111,181,.14)}
-  .q .opt.correct{border-color:var(--ok);background:rgba(39,192,138,.14)}
-  .q .opt.wrong{border-color:var(--err);background:rgba(255,92,122,.14)}
+  .q .opt.sel{border-color:var(--accent);background:rgba(255,46,154,.12)}
+  .q .opt.correct{border-color:var(--ok);background:rgba(31,185,138,.14)}
+  .q .opt.wrong{border-color:var(--err);background:rgba(255,92,138,.14)}
+  .fillrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .fillrow input{flex:1;min-width:160px}
+  .fillrow input.good{border-color:var(--ok);background:rgba(31,185,138,.10)}
+  .fillrow input.bad{border-color:var(--err);background:rgba(255,92,138,.10)}
   .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .spacer{flex:1}
   .pill{font-size:12px;font-weight:700;color:var(--muted);background:var(--bg2);padding:6px 11px;border-radius:999px;border:1px solid var(--line)}
   .lesson{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;line-height:1.6}
-  .lesson ul{margin:8px 0 0 18px} .lesson li{margin:4px 0}
+  .lesson code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px;color:var(--accent)}
+  .passage{background:linear-gradient(180deg,#fff,#fdf2fa);border:1px dashed var(--accent);border-radius:12px;padding:16px;margin:12px 0;line-height:1.6;font-style:italic}
+  .passage .ptag{font-style:normal;font-weight:800;font-size:12px;color:var(--accent);display:block;margin-bottom:6px}
   .module{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;background:var(--card2)}
   .module .mhead{display:flex;align-items:center;gap:10px;cursor:pointer}
   .check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:12px;flex-shrink:0}
@@ -77,17 +86,17 @@
   .result-big{text-align:center;padding:14px 0}
   .result-big .score{font-size:46px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
   .hidden{display:none!important}
-  .expl{font-size:13px;color:var(--muted);margin-top:8px;padding-left:4px;border-left:2px solid var(--accent)}
-  footer{ text-align:center;color:var(--muted);font-size:12px;padding:18px 0 30px}
+  .expl{font-size:13px;color:var(--muted);margin-top:8px;padding-left:10px;border-left:3px solid var(--accent)}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:18px 0 30px}
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);
-    padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.3s;pointer-events:none}
+    padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;box-shadow:0 8px 24px rgba(214,120,190,.25)}
   .toast.show{opacity:1}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><div class="logo">S</div> SkillUp</div>
+    <div class="brand"><div class="logo">S<span class="spark">✦</span></div> Skillyam</div>
     <div class="top-actions">
       <span class="who" id="who"></span>
       <div class="lang">
@@ -98,22 +107,13 @@
     </div>
   </header>
 
-  <!-- GATE (code d'accès) -->
   <section id="view-gate"></section>
-
-  <!-- AUTH -->
   <section id="view-auth"></section>
-
-  <!-- DASHBOARD -->
   <section id="view-dash" class="hidden"></section>
-
-  <!-- TEST -->
   <section id="view-test" class="hidden"></section>
-
-  <!-- MODULES -->
   <section id="view-modules" class="hidden"></section>
 
-  <footer>SkillUp · <span id="foot"></span></footer>
+  <footer>Skillyam · <span id="foot"></span></footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -134,13 +134,14 @@ const I18N = {
     resultInterMsg:"Vous maîtrisez les bases : place aux notions plus avancées.",
     seeModules:"Voir mes modules adaptés", modulesOf:"Modules", lesson:"Leçon",
     practice:"Exercices", markDone:"Marquer comme terminé", done:"Terminé", checkAns:"Vérifier",
-    correct:"Correct !", incorrect:"Pas tout à fait.", next:"Suivant",
+    correct:"Correct !", incorrect:"Pas tout à fait.", correctWas:"Bonne réponse :",
     answerAll:"Répondez à toutes les questions avant de valider.",
     moduleDone:"Module terminé, bravo !", pwdShort:"Le mot de passe doit faire au moins 6 caractères.",
     emailUsed:"Cet e-mail est déjà utilisé.", badLogin:"E-mail ou mot de passe incorrect.",
     fillAll:"Merci de remplir tous les champs.", securityNote:"Vos données restent sur cet appareil (prototype).",
     gateTitle:"Accès réservé", gateSub:"Entrez le code d'accès qui vous a été communiqué pour continuer.",
-    gateLabel:"Code d'accès", gateBtn:"Entrer", gateErr:"Code incorrect. Réessayez."
+    gateLabel:"Code d'accès", gateBtn:"Entrer", gateErr:"Code incorrect. Réessayez.",
+    textToAnalyze:"Texte à analyser", yourAnswer:"Votre réponse…", fillHint:"Tapez le mot manquant"
   },
   en:{
     tagline:"Build your skills at your own pace, on a path adapted to your level.",
@@ -156,18 +157,16 @@ const I18N = {
     resultInterMsg:"You've got the basics: time for more advanced topics.",
     seeModules:"See my adapted modules", modulesOf:"Modules", lesson:"Lesson",
     practice:"Exercises", markDone:"Mark as complete", done:"Completed", checkAns:"Check",
-    correct:"Correct!", incorrect:"Not quite.", next:"Next",
+    correct:"Correct!", incorrect:"Not quite.", correctWas:"Correct answer:",
     answerAll:"Answer every question before submitting.",
     moduleDone:"Module complete, well done!", pwdShort:"Password must be at least 6 characters.",
     emailUsed:"This email is already in use.", badLogin:"Wrong email or password.",
     fillAll:"Please fill in all fields.", securityNote:"Your data stays on this device (prototype).",
     gateTitle:"Restricted access", gateSub:"Enter the access code you were given to continue.",
-    gateLabel:"Access code", gateBtn:"Enter", gateErr:"Wrong code. Try again."
+    gateLabel:"Access code", gateBtn:"Enter", gateErr:"Wrong code. Try again.",
+    textToAnalyze:"Text to analyze", yourAnswer:"Your answer…", fillHint:"Type the missing word"
   }
 };
-
-/* ====== CODE D'ACCÈS — change la valeur ci-dessous pour définir ton propre code ====== */
-const ACCESS_CODE = "SKILLUP-2026";
 let lang = localStorage.getItem('su_lang') || 'fr';
 const t = k => (I18N[lang][k] ?? k);
 function setLang(l){ lang=l; localStorage.setItem('su_lang',l);
@@ -175,34 +174,37 @@ function setLang(l){ lang=l; localStorage.setItem('su_lang',l);
   document.getElementById('len').classList.toggle('active',l==='en');
   document.documentElement.lang=l; render(); }
 
-/* ============ Content ============ */
+/* ====== CODE D'ACCÈS — change la valeur ci-dessous pour définir ton propre code ====== */
+const ACCESS_CODE = "SKILLYAM-2026";
+
+/* ============ Domains ============ */
 const DOMAINS = {
   english:{ ic:"🗣️", name:{fr:"Anglais professionnel",en:"Business English"},
     desc:{fr:"E-mails, réunions, vocabulaire métier",en:"Emails, meetings, business vocabulary"} },
   compliance:{ ic:"⚖️", name:{fr:"Conformité / CFA",en:"Compliance / CFA"},
     desc:{fr:"Éthique, déontologie, réglementation",en:"Ethics, conduct, regulation"} },
   finance:{ ic:"🏦", name:{fr:"Assurance & Banque",en:"Insurance & Banking"},
-    desc:{fr:"Produits, notions clés du secteur",en:"Products, key sector concepts"} },
+    desc:{fr:"Deux parcours : Assurance et Banque",en:"Two tracks: Insurance and Banking"} },
   it:{ ic:"💻", name:{fr:"Informatique / Codage",en:"IT / Coding"},
     desc:{fr:"Logique, bases du code",en:"Logic, coding fundamentals"} }
 };
 
-/* Each test question: difficulty e=easy(beginner) m=medium(intermediate) */
+/* ============ Placement tests (d=e easy / m medium) ============ */
 const TESTS = {
   english:[
     {d:'e',q:{fr:"« I look forward to ___ from you. »",en:"« I look forward to ___ from you. »"},o:["hear","hearing","heard","hears"],a:1},
-    {d:'e',q:{fr:"Choisir la formule de politesse correcte pour finir un e-mail formel.",en:"Pick the correct closing for a formal email."},o:["Bye bye","Best regards","See ya","Cheers mate"],a:1},
+    {d:'e',q:{fr:"Formule de politesse correcte pour finir un e-mail formel.",en:"Correct closing for a formal email."},o:["Bye bye","Best regards","See ya","Cheers mate"],a:1},
     {d:'e',q:{fr:"« Please find the report ___ . »",en:"« Please find the report ___ . »"},o:["attached","attach","attaching","attachment"],a:0},
     {d:'m',q:{fr:"« We need to ___ the deadline to Friday. »",en:"« We need to ___ the deadline to Friday. »"},o:["push back","push down","push out of","push under"],a:0},
-    {d:'m',q:{fr:"En réunion, « let's circle back on this » signifie :",en:"In a meeting, “let's circle back on this” means:"},o:["Décider maintenant / Decide now","Y revenir plus tard / Return to it later","Annuler / Cancel","Voter / Vote"],a:1},
+    {d:'m',q:{fr:"« Let's circle back on this » signifie :",en:"“Let's circle back on this” means:"},o:["Décider maintenant / Decide now","Y revenir plus tard / Return to it later","Annuler / Cancel","Voter / Vote"],a:1},
     {d:'m',q:{fr:"« The figures are ___ with last quarter. »",en:"« The figures are ___ with last quarter. »"},o:["in line","on line","by line","at line"],a:0}
   ],
   compliance:[
     {d:'e',q:{fr:"Que signifie « KYC » ?",en:"What does “KYC” stand for?"},o:["Know Your Customer","Keep Your Cash","Key Yield Control","Known Yearly Cost"],a:0},
     {d:'e',q:{fr:"Un conflit d'intérêts doit d'abord être :",en:"A conflict of interest must first be:"},o:["Ignoré / Ignored","Divulgué / Disclosed","Monétisé / Monetised","Oublié / Forgotten"],a:1},
-    {d:'e',q:{fr:"« AML » concerne la lutte contre :",en:"“AML” refers to the fight against:"},o:["Le blanchiment / Money laundering","Le bruit / Noise","Les retards / Delays","Les emails / Emails"],a:0},
+    {d:'e',q:{fr:"« AML » concerne la lutte contre :",en:"“AML” refers to the fight against:"},o:["Le blanchiment / Money laundering","Le bruit / Noise","Les retards / Delays","Les e-mails / Emails"],a:0},
     {d:'m',q:{fr:"Dans le CFA Code, l'intérêt du client passe :",en:"In the CFA Code, the client's interest comes:"},o:["Après l'employeur / After the employer","Avant l'intérêt personnel / Before personal interest","Après les marchés / After markets","Au même niveau / At the same level"],a:1},
-    {d:'m',q:{fr:"Le « material non-public information » ne doit pas servir à :",en:"“Material non-public information” must not be used to:"},o:["Former / Train","Trader / Trade on it","Archiver / Archive","Auditer / Audit"],a:1},
+    {d:'m',q:{fr:"L'information privilégiée (non publique) ne doit pas servir à :",en:"Material non-public information must not be used to:"},o:["Former / Train","Trader / Trade on it","Archiver / Archive","Auditer / Audit"],a:1},
     {d:'m',q:{fr:"La « muraille de Chine » (information barrier) sert à :",en:"A “Chinese wall” (information barrier) is used to:"},o:["Séparer des fonctions / Separate functions","Bloquer Internet / Block internet","Crypter / Encrypt","Recruter / Recruit"],a:0}
   ],
   finance:[
@@ -211,7 +213,7 @@ const TESTS = {
     {d:'e',q:{fr:"Un « sinistre » en assurance désigne :",en:"A “claim” in insurance refers to:"},o:["Un événement couvert / A covered event","Un dividende / A dividend","Un compte / An account","Un guichet / A counter"],a:0},
     {d:'m',q:{fr:"La « franchise » est la part :",en:"The “deductible” is the share:"},o:["Payée par l'assureur / Paid by the insurer","Restant à la charge de l'assuré / Left to the insured","Du courtier / Of the broker","De l'État / Of the State"],a:1},
     {d:'m',q:{fr:"Le ratio de solvabilité d'une banque mesure :",en:"A bank's solvency ratio measures:"},o:["Sa liquidité quotidienne / Daily liquidity","Sa capacité à absorber les pertes / Capacity to absorb losses","Son chiffre d'affaires / Its revenue","Son nombre d'agences / Branch count"],a:1},
-    {d:'m',q:{fr:"Un produit à « capital garanti » signifie :",en:"A “capital-guaranteed” product means:"},o:["Rendement fixe élevé / High fixed return","Le capital investi est protégé / Invested capital is protected","Aucun risque de marché jamais / Never any market risk","Liquidité immédiate / Instant liquidity"],a:1}
+    {d:'m',q:{fr:"Un produit à « capital garanti » signifie :",en:"A “capital-guaranteed” product means:"},o:["Rendement fixe élevé / High fixed return","Le capital investi est protégé / Invested capital is protected","Aucun risque jamais / Never any risk","Liquidité immédiate / Instant liquidity"],a:1}
   ],
   it:[
     {d:'e',q:{fr:"Une « variable » sert à :",en:"A “variable” is used to:"},o:["Stocker une valeur / Store a value","Éteindre l'ordinateur / Turn off the PC","Imprimer / Print","Compiler / Compile"],a:0},
@@ -223,102 +225,248 @@ const TESTS = {
   ]
 };
 
-/* Modules per domain & level. ex: practice questions {q,o,a,exp} */
+/* ============ Modules (5 per level / domain) ============
+   Exercise types: mcq {o,a}  |  fill {accept:[...]} (text input)
+   Optional module.passage{fr,en} shown as a text/article to analyze. */
 const MODULES = {
   english:{
     beginner:[
       {title:{fr:"E-mails professionnels — les bases",en:"Professional emails — basics"},
-       lesson:{fr:"Un e-mail formel suit une structure simple : <b>salutation</b> (Dear…), <b>objet clair</b>, <b>corps concis</b>, <b>formule de clôture</b> (Best regards) et signature. Évitez l'argot et les abréviations.",
-               en:"A formal email follows a simple structure: <b>greeting</b> (Dear…), <b>clear subject</b>, <b>concise body</b>, <b>closing</b> (Best regards) and signature. Avoid slang and abbreviations."},
-       ex:[{q:{fr:"Meilleure salutation formelle :",en:"Best formal greeting:"},o:["Hey!","Dear Ms. Lopez,","Yo team","Hi hi"],a:1,exp:{fr:"« Dear + nom » est la norme formelle.",en:"“Dear + name” is the formal standard."}},
-           {q:{fr:"Clôture appropriée :",en:"Appropriate closing:"},o:["Best regards,","Later!","xoxo","TTYL"],a:0,exp:{fr:"« Best regards » convient à presque tout contexte pro.",en:"“Best regards” fits almost any professional context."}}]},
+       lesson:{fr:"Structure d'un e-mail formel : <b>salutation</b> (Dear…), <b>objet clair</b>, <b>corps concis</b>, <b>formule de clôture</b> (Best regards) et signature. On évite l'argot et les abréviations (ASAP, btw).",
+               en:"A formal email's structure: <b>greeting</b> (Dear…), <b>clear subject</b>, <b>concise body</b>, <b>closing</b> (Best regards) and signature. Avoid slang and abbreviations (ASAP, btw)."},
+       ex:[{type:'mcq',q:{fr:"Meilleure salutation formelle :",en:"Best formal greeting:"},o:["Hey!","Dear Ms. Lopez,","Yo team","Hi hi"],a:1,exp:{fr:"« Dear + nom » est la norme formelle.",en:"“Dear + name” is the formal standard."}},
+           {type:'fill',q:{fr:"Complétez : « Please find the document ___ . » (joint)",en:"Fill in: « Please find the document ___ . » (attached)"},accept:["attached"],exp:{fr:"« attached » = joint à l'e-mail.",en:"“attached” = enclosed with the email."}}]},
       {title:{fr:"Vocabulaire de réunion",en:"Meeting vocabulary"},
-       lesson:{fr:"Expressions utiles : <b>to set up a meeting</b> (organiser), <b>agenda</b> (ordre du jour), <b>minutes</b> (compte-rendu), <b>action items</b> (tâches à faire), <b>to follow up</b> (faire le suivi).",
+       lesson:{fr:"Expressions utiles : <b>to set up a meeting</b> (organiser), <b>agenda</b> (ordre du jour), <b>minutes</b> (compte-rendu), <b>action items</b> (tâches), <b>to follow up</b> (faire le suivi).",
                en:"Useful phrases: <b>to set up a meeting</b>, <b>agenda</b>, <b>minutes</b> (the written record), <b>action items</b>, <b>to follow up</b>."},
-       ex:[{q:{fr:"« The minutes » d'une réunion sont :",en:"The “minutes” of a meeting are:"},o:["Sa durée / Its length","Le compte-rendu écrit / The written record","Les retards / The delays","Les pauses / The breaks"],a:1,exp:{fr:"« Minutes » = compte-rendu, pas les minutes de temps.",en:"“Minutes” = the record, not units of time."}}]}
+       ex:[{type:'mcq',q:{fr:"« The minutes » d'une réunion sont :",en:"The “minutes” of a meeting are:"},o:["Sa durée / Its length","Le compte-rendu écrit / The written record","Les retards / The delays","Les pauses / The breaks"],a:1,exp:{fr:"« Minutes » = compte-rendu.",en:"“Minutes” = the record."}},
+           {type:'fill',q:{fr:"Complétez : « Let's ___ a meeting for Monday. » (organiser)",en:"Fill in: « Let's ___ up a meeting for Monday. » (set)"},accept:["set","set up","setup"],exp:{fr:"« to set up a meeting » = organiser une réunion.",en:"“to set up a meeting” = to organise one."}}]},
+      {title:{fr:"Téléphone & présentations",en:"Phone calls & introductions"},
+       lesson:{fr:"Au téléphone : <b>This is… speaking</b> (c'est… à l'appareil), <b>Could you put me through to…?</b> (me passer…), <b>I'll call you back</b> (je vous rappelle). Se présenter : <b>I'm in charge of…</b> (je suis responsable de…).",
+               en:"On the phone: <b>This is… speaking</b>, <b>Could you put me through to…?</b>, <b>I'll call you back</b>. Introducing yourself: <b>I'm in charge of…</b>."},
+       ex:[{type:'mcq',q:{fr:"« Could you put me through to Sarah? » demande de :",en:"« Could you put me through to Sarah? » asks to:"},o:["Raccrocher / Hang up","Transférer l'appel / Transfer the call","Rappeler / Call back","Laisser un message / Leave a message"],a:1,exp:{fr:"« put through » = transférer un appel.",en:"“put through” = transfer a call."}},
+           {type:'fill',q:{fr:"Complétez : « Hello, this is Yousra ___ . » (à l'appareil)",en:"Fill in: « Hello, this is Yousra ___ . » (speaking)"},accept:["speaking"],exp:{fr:"« speaking » se place après le prénom au téléphone.",en:"“speaking” follows your name on the phone."}}]},
+      {title:{fr:"Nombres, dates & planning",en:"Numbers, dates & scheduling"},
+       lesson:{fr:"Dates en anglais : <b>on Monday</b>, <b>in March</b>, <b>at 3 p.m.</b>. Planifier : <b>to reschedule</b> (reprogrammer), <b>to postpone</b> (reporter), <b>deadline</b> (échéance), <b>available</b> (disponible).",
+               en:"Dates: <b>on Monday</b>, <b>in March</b>, <b>at 3 p.m.</b>. Scheduling: <b>to reschedule</b>, <b>to postpone</b>, <b>deadline</b>, <b>available</b>."},
+       ex:[{type:'fill',q:{fr:"Préposition : « The call is ___ Tuesday. » (le mardi)",en:"Preposition: « The call is ___ Tuesday. »"},accept:["on"],exp:{fr:"On utilise « on » avec les jours.",en:"Use “on” with days of the week."}},
+           {type:'mcq',q:{fr:"« To postpone a meeting » signifie :",en:"« To postpone a meeting » means:"},o:["L'annuler / Cancel it","La reporter / Move it later","La raccourcir / Shorten it","La filmer / Record it"],a:1,exp:{fr:"« postpone » = reporter à plus tard.",en:"“postpone” = move to a later date."}}]},
+      {title:{fr:"Analyse de texte — comprendre un e-mail",en:"Text analysis — understanding an email"},
+       passage:{fr:"Dear Mr. Dubois,\n\nThank you for your email. Unfortunately, we are unable to confirm the delivery for next week, as our supplier is facing delays. We expect the goods to be available by 30 June and will keep you updated. We apologise for any inconvenience.\n\nBest regards,\nThe Logistics Team",
+                en:"Dear Mr. Dubois,\n\nThank you for your email. Unfortunately, we are unable to confirm the delivery for next week, as our supplier is facing delays. We expect the goods to be available by 30 June and will keep you updated. We apologise for any inconvenience.\n\nBest regards,\nThe Logistics Team"},
+       lesson:{fr:"Lisez l'e-mail ci-dessus, puis répondez aux questions. Repérez le <b>ton</b>, la <b>raison</b> du problème et la <b>date</b> clé.",
+               en:"Read the email above, then answer the questions. Spot the <b>tone</b>, the <b>reason</b> for the issue, and the key <b>date</b>."},
+       ex:[{type:'mcq',q:{fr:"Pourquoi la livraison ne peut-elle pas être confirmée ?",en:"Why can't the delivery be confirmed?"},o:["Le client n'a pas payé / The client hasn't paid","Le fournisseur a du retard / The supplier is delayed","La commande est annulée / The order is cancelled","L'adresse est fausse / Wrong address"],a:1,exp:{fr:"« our supplier is facing delays ».",en:"“our supplier is facing delays.”"}},
+           {type:'fill',q:{fr:"À quelle date les marchandises seront-elles disponibles ? (jour mois)",en:"By what date will the goods be available? (day month)"},accept:["30 june","june 30","30 juin","30/06"],exp:{fr:"« available by 30 June ».",en:"“available by 30 June.”"}}]}
     ],
     intermediate:[
       {title:{fr:"Nuance & diplomatie",en:"Hedging & diplomacy"},
-       lesson:{fr:"Pour adoucir un message : <b>I'm afraid…</b>, <b>It might be worth…</b>, <b>Could we possibly…</b>. Le conditionnel (would/could) rend la demande plus polie.",
-               en:"To soften a message: <b>I'm afraid…</b>, <b>It might be worth…</b>, <b>Could we possibly…</b>. The conditional (would/could) makes a request more polite."},
-       ex:[{q:{fr:"Demande la plus diplomate :",en:"Most diplomatic request:"},o:["Send it now.","Could you possibly send it today?","Send it or else.","I need it. Now."],a:1,exp:{fr:"« Could you possibly… » est la forme la plus polie.",en:"“Could you possibly…” is the most polite form."}},
-           {q:{fr:"« I'm afraid we can't… » exprime :",en:"“I'm afraid we can't…” expresses:"},o:["La peur / Fear","Un refus poli / A polite refusal","La joie / Joy","Un ordre / An order"],a:1,exp:{fr:"C'est une façon courtoise d'annoncer un refus.",en:"It's a courteous way to deliver a refusal."}}]},
+       lesson:{fr:"Adoucir un message : <b>I'm afraid…</b>, <b>It might be worth…</b>, <b>Could we possibly…</b>. Le conditionnel (would/could) rend la demande plus polie et professionnelle.",
+               en:"Softening a message: <b>I'm afraid…</b>, <b>It might be worth…</b>, <b>Could we possibly…</b>. The conditional (would/could) makes requests more polite."},
+       ex:[{type:'mcq',q:{fr:"Demande la plus diplomate :",en:"Most diplomatic request:"},o:["Send it now.","Could you possibly send it today?","Send it or else.","I need it. Now."],a:1,exp:{fr:"« Could you possibly… » = forme la plus polie.",en:"“Could you possibly…” is most polite."}},
+           {type:'fill',q:{fr:"Complétez : « I'm ___ we can't meet your deadline. » (désolé/crains)",en:"Fill in: « I'm ___ we can't meet your deadline. » (afraid)"},accept:["afraid"],exp:{fr:"« I'm afraid… » annonce poliment une mauvaise nouvelle.",en:"“I'm afraid…” politely delivers bad news."}}]},
       {title:{fr:"Négociation & idiomes business",en:"Negotiation & business idioms"},
-       lesson:{fr:"<b>Win-win</b> (gagnant-gagnant), <b>ballpark figure</b> (estimation), <b>to touch base</b> (reprendre contact), <b>the bottom line</b> (l'essentiel / le résultat net).",
-               en:"<b>Win-win</b>, <b>ballpark figure</b> (rough estimate), <b>to touch base</b> (reconnect), <b>the bottom line</b> (the key point / net result)."},
-       ex:[{q:{fr:"« A ballpark figure » est :",en:"“A ballpark figure” is:"},o:["Un chiffre exact / An exact number","Une estimation approximative / A rough estimate","Un stade / A stadium","Une perte / A loss"],a:1,exp:{fr:"Idiome = ordre de grandeur approximatif.",en:"Idiom = an approximate order of magnitude."}}]}
+       lesson:{fr:"<b>Win-win</b> (gagnant-gagnant), <b>ballpark figure</b> (estimation), <b>to touch base</b> (reprendre contact), <b>the bottom line</b> (l'essentiel / le résultat net), <b>to meet halfway</b> (faire un compromis).",
+               en:"<b>Win-win</b>, <b>ballpark figure</b> (rough estimate), <b>to touch base</b>, <b>the bottom line</b>, <b>to meet halfway</b> (compromise)."},
+       ex:[{type:'mcq',q:{fr:"« A ballpark figure » est :",en:"“A ballpark figure” is:"},o:["Un chiffre exact / An exact number","Une estimation approximative / A rough estimate","Un stade / A stadium","Une perte / A loss"],a:1,exp:{fr:"Ordre de grandeur approximatif.",en:"An approximate order of magnitude."}},
+           {type:'fill',q:{fr:"Complétez l'idiome : « Let's meet ___ . » (à mi-chemin = compromis)",en:"Complete the idiom: « Let's meet ___ . » (halfway)"},accept:["halfway","half way"],exp:{fr:"« meet halfway » = faire un compromis.",en:"“meet halfway” = compromise."}}]},
+      {title:{fr:"Phrasal verbs au bureau",en:"Phrasal verbs at work"},
+       lesson:{fr:"Très courants : <b>carry out</b> (réaliser), <b>set up</b> (mettre en place), <b>follow up</b> (relancer), <b>call off</b> (annuler), <b>look into</b> (examiner), <b>roll out</b> (déployer).",
+               en:"Very common: <b>carry out</b>, <b>set up</b>, <b>follow up</b>, <b>call off</b> (cancel), <b>look into</b> (investigate), <b>roll out</b> (deploy)."},
+       ex:[{type:'fill',q:{fr:"Complétez : « We had to ___ ___ the event due to weather. » (annuler)",en:"Fill in: « We had to ___ ___ the event due to weather. » (cancel)"},accept:["call off","call it off"],exp:{fr:"« call off » = annuler.",en:"“call off” = cancel."}},
+           {type:'mcq',q:{fr:"« To look into a problem » signifie :",en:"« To look into a problem » means:"},o:["L'ignorer / Ignore it","L'examiner / Investigate it","Le créer / Create it","Le vendre / Sell it"],a:1,exp:{fr:"« look into » = examiner, enquêter.",en:"“look into” = investigate."}}]},
+      {title:{fr:"Rédiger un résumé clair",en:"Writing a clear summary"},
+       lesson:{fr:"Un bon résumé : <b>une idée principale</b>, des <b>connecteurs</b> (however, therefore, in addition) et une <b>conclusion</b>. On reformule, on ne copie pas. On reste factuel et concis.",
+               en:"A good summary: <b>one main idea</b>, <b>connectors</b> (however, therefore, in addition), and a <b>conclusion</b>. Rephrase, don't copy. Stay factual and concise."},
+       ex:[{type:'mcq',q:{fr:"Quel connecteur exprime une opposition ?",en:"Which connector expresses contrast?"},o:["Therefore","However","In addition","Because"],a:1,exp:{fr:"« However » = cependant (opposition).",en:"“However” signals contrast."}},
+           {type:'fill',q:{fr:"Complétez : « Sales rose; ___ , costs also increased. » (cependant)",en:"Fill in: « Sales rose; ___ , costs also increased. » (however)"},accept:["however"],exp:{fr:"« however » introduit une nuance contraire.",en:"“however” introduces a contrasting point."}}]},
+      {title:{fr:"Analyse d'article — actualité business",en:"Article analysis — business news"},
+       passage:{fr:"A leading European bank announced on Monday that its quarterly profits rose by 12%, driven by strong demand for loans. However, the bank warned that rising interest rates could slow growth in the coming months. Analysts remain cautiously optimistic.",
+                en:"A leading European bank announced on Monday that its quarterly profits rose by 12%, driven by strong demand for loans. However, the bank warned that rising interest rates could slow growth in the coming months. Analysts remain cautiously optimistic."},
+       lesson:{fr:"Lisez l'article, puis identifiez le <b>chiffre clé</b>, la <b>cause</b> et le <b>risque</b> évoqué.",
+               en:"Read the article, then identify the <b>key figure</b>, the <b>cause</b> and the <b>risk</b> mentioned."},
+       ex:[{type:'fill',q:{fr:"De combien les profits ont-ils augmenté ? (en %)",en:"By how much did profits rise? (in %)"},accept:["12","12%","12 percent","12 per cent"],exp:{fr:"« profits rose by 12% ».",en:"“profits rose by 12%.”"}},
+           {type:'mcq',q:{fr:"Quel risque la banque évoque-t-elle ?",en:"What risk does the bank mention?"},o:["La baisse des prêts / Fewer loans","La hausse des taux d'intérêt / Rising interest rates","Un scandale / A scandal","Une cyberattaque / A cyberattack"],a:1,exp:{fr:"« rising interest rates could slow growth ».",en:"“rising interest rates could slow growth.”"}}]}
     ]
   },
   compliance:{
     beginner:[
       {title:{fr:"Les piliers de la conformité",en:"Pillars of compliance"},
-       lesson:{fr:"La conformité repose sur : <b>KYC</b> (connaître son client), <b>AML</b> (anti-blanchiment), la <b>gestion des conflits d'intérêts</b> et la <b>protection des données</b>. Objectif : prévenir les risques légaux et de réputation.",
-               en:"Compliance rests on: <b>KYC</b> (know your customer), <b>AML</b> (anti-money-laundering), <b>conflict-of-interest management</b> and <b>data protection</b>. Goal: prevent legal and reputational risk."},
-       ex:[{q:{fr:"Le KYC vise surtout à :",en:"KYC mainly aims to:"},o:["Vérifier l'identité du client / Verify client identity","Vendre plus / Sell more","Réduire les coûts / Cut costs","Recruter / Recruit"],a:0,exp:{fr:"Identifier et vérifier le client est le cœur du KYC.",en:"Identifying and verifying the client is the core of KYC."}},
-           {q:{fr:"Un signe d'alerte de blanchiment :",en:"A money-laundering red flag:"},o:["Paiement régulier par virement / Regular bank transfer","Dépôts fractionnés en espèces inexpliqués / Unexplained structured cash deposits","Facture détaillée / Itemised invoice","RIB fourni / IBAN provided"],a:1,exp:{fr:"Le fractionnement (« structuring ») est un signal classique.",en:"Structuring is a classic red flag."}}]},
+       lesson:{fr:"La conformité repose sur : <b>KYC</b> (connaître son client), <b>AML</b> (anti-blanchiment), la <b>gestion des conflits d'intérêts</b> et la <b>protection des données</b>. But : prévenir les risques légaux et de réputation.",
+               en:"Compliance rests on: <b>KYC</b>, <b>AML</b>, <b>conflict-of-interest management</b> and <b>data protection</b>. Goal: prevent legal and reputational risk."},
+       ex:[{type:'mcq',q:{fr:"Le KYC vise surtout à :",en:"KYC mainly aims to:"},o:["Vérifier l'identité du client / Verify client identity","Vendre plus / Sell more","Réduire les coûts / Cut costs","Recruter / Recruit"],a:0,exp:{fr:"Identifier et vérifier le client = cœur du KYC.",en:"Identifying and verifying the client is the core."}},
+           {type:'fill',q:{fr:"« KYC » signifie Know Your ___ . (client)",en:"« KYC » stands for Know Your ___ ."},accept:["customer","client"],exp:{fr:"Know Your Customer.",en:"Know Your Customer."}}]},
+      {title:{fr:"KYC & identification du client",en:"KYC & client identification"},
+       lesson:{fr:"Le KYC vérifie l'<b>identité</b>, l'<b>origine des fonds</b> et le <b>profil de risque</b>. Les clients à risque élevé (PPE — personnes politiquement exposées) exigent une <b>vigilance renforcée</b>.",
+               en:"KYC checks <b>identity</b>, <b>source of funds</b> and <b>risk profile</b>. High-risk clients (PEPs — politically exposed persons) require <b>enhanced due diligence</b>."},
+       ex:[{type:'mcq',q:{fr:"Une « PPE » nécessite :",en:"A “PEP” requires:"},o:["Aucune vérification / No checks","Une vigilance renforcée / Enhanced due diligence","Un cadeau / A gift","Un compte gratuit / A free account"],a:1,exp:{fr:"Les PPE imposent une vigilance renforcée.",en:"PEPs require enhanced due diligence."}},
+           {type:'fill',q:{fr:"On doit vérifier l'origine des ___ du client. (fonds)",en:"You must verify the client's source of ___ . (funds)"},accept:["funds","fonds","money"],exp:{fr:"Origine des fonds = élément clé du KYC.",en:"Source of funds is a key KYC element."}}]},
+      {title:{fr:"AML — les bases de l'anti-blanchiment",en:"AML — anti-money-laundering basics"},
+       lesson:{fr:"Le blanchiment suit 3 étapes : <b>placement</b> (introduire l'argent), <b>empilage</b> (brouiller la traçabilité), <b>intégration</b> (réinjecter comme légitime). Signaux d'alerte : espèces fractionnées, opérations sans logique économique.",
+               en:"Laundering follows 3 stages: <b>placement</b>, <b>layering</b> (obscuring the trail), <b>integration</b> (reintroducing as legitimate). Red flags: structured cash, transactions with no economic rationale."},
+       ex:[{type:'mcq',q:{fr:"Un signe d'alerte de blanchiment :",en:"A money-laundering red flag:"},o:["Virement régulier / Regular transfer","Dépôts en espèces fractionnés inexpliqués / Unexplained structured cash","Facture détaillée / Itemised invoice","RIB fourni / IBAN provided"],a:1,exp:{fr:"Le fractionnement (« structuring ») est classique.",en:"Structuring is a classic red flag."}},
+           {type:'fill',q:{fr:"La 2e étape du blanchiment s'appelle l'___ . (empilage / layering)",en:"The 2nd stage of laundering is called ___ . (layering)"},accept:["layering","empilage"],exp:{fr:"Placement → layering → intégration.",en:"Placement → layering → integration."}}]},
       {title:{fr:"Conflits d'intérêts",en:"Conflicts of interest"},
-       lesson:{fr:"Un conflit existe quand un intérêt personnel peut influencer une décision professionnelle. Règle d'or : <b>divulguer</b>, puis gérer (abstention, muraille de Chine). Ne jamais dissimuler.",
-               en:"A conflict exists when a personal interest could influence a professional decision. Golden rule: <b>disclose</b>, then manage (recusal, information barrier). Never conceal."},
-       ex:[{q:{fr:"Première bonne réaction face à un conflit :",en:"First correct reaction to a conflict:"},o:["Le déclarer / Disclose it","Le cacher / Hide it","En profiter / Exploit it","Démissionner / Resign"],a:0,exp:{fr:"La divulgation est la première étape exigée.",en:"Disclosure is the required first step."}}]}
+       lesson:{fr:"Un conflit existe quand un intérêt personnel peut influencer une décision pro. Règle d'or : <b>divulguer</b>, puis gérer (abstention, muraille de Chine). Ne jamais dissimuler.",
+               en:"A conflict exists when a personal interest could sway a professional decision. Golden rule: <b>disclose</b>, then manage (recusal, information barrier). Never conceal."},
+       ex:[{type:'mcq',q:{fr:"Première bonne réaction face à un conflit :",en:"First correct reaction to a conflict:"},o:["Le déclarer / Disclose it","Le cacher / Hide it","En profiter / Exploit it","Démissionner / Resign"],a:0,exp:{fr:"La divulgation est la première étape.",en:"Disclosure is the first step."}},
+           {type:'fill',q:{fr:"Face à un conflit, il faut d'abord le ___ . (divulguer)",en:"Facing a conflict, you must first ___ it. (disclose)"},accept:["disclose","divulguer","declarer","déclarer"],exp:{fr:"Divulguer avant de gérer.",en:"Disclose before managing."}}]},
+      {title:{fr:"Analyse de cas — repérer un signal d'alerte",en:"Case analysis — spotting a red flag"},
+       passage:{fr:"Un nouveau client souhaite ouvrir un compte et déposer 9 500 € en espèces aujourd'hui, puis indique qu'il déposera des montants similaires « par petites tranches » les jours suivants pour « éviter la paperasse ». Il refuse de préciser l'origine des fonds.",
+                en:"A new client wants to open an account and deposit €9,500 in cash today, then says he will deposit similar amounts “in small chunks” over the next days to “avoid paperwork.” He refuses to disclose the source of funds."},
+       lesson:{fr:"Lisez le cas, puis identifiez le problème de conformité.",
+               en:"Read the case, then identify the compliance issue."},
+       ex:[{type:'mcq',q:{fr:"Quel est le principal signal d'alerte ?",en:"What is the main red flag?"},o:["Le montant est trop faible / Amount too low","Le fractionnement pour éviter les seuils / Structuring to avoid thresholds","Il vient en personne / He comes in person","Il a un nom étranger / He has a foreign name"],a:1,exp:{fr:"Déposer par tranches pour éviter les seuils = structuring.",en:"Splitting deposits to dodge thresholds = structuring."}},
+           {type:'fill',q:{fr:"Le client refuse de préciser l'___ des fonds. (origine)",en:"The client refuses to disclose the ___ of funds. (source)"},accept:["origine","source"],exp:{fr:"Refus d'expliquer l'origine = vigilance renforcée.",en:"Refusing to explain the source triggers enhanced scrutiny."}}]}
     ],
     intermediate:[
       {title:{fr:"CFA — Code of Ethics & Standards",en:"CFA — Code of Ethics & Standards"},
-       lesson:{fr:"Le CFA Institute impose 6 principes, dont la <b>primauté de l'intégrité des marchés</b> et de l'intérêt du client <b>avant</b> l'intérêt personnel ou de l'employeur. Les Standards couvrent professionnalisme, marchés, devoirs envers les clients et conflits.",
-               en:"CFA Institute sets 6 principles, including the <b>primacy of market integrity</b> and putting the client's interest <b>before</b> personal or employer interest. The Standards cover professionalism, markets, duties to clients and conflicts."},
-       ex:[{q:{fr:"Selon le Code CFA, l'ordre de priorité est :",en:"Per the CFA Code, the priority order is:"},o:["Soi > Employeur > Client","Client & intégrité du marché d'abord / Client & market integrity first","Employeur d'abord / Employer first","Aucun ordre / No order"],a:1,exp:{fr:"L'intégrité du marché et le client priment.",en:"Market integrity and the client come first."}},
-           {q:{fr:"Utiliser une information privilégiée pour trader est :",en:"Trading on inside (material non-public) information is:"},o:["Autorisé si discret / Allowed if discreet","Interdit / Prohibited","Recommandé / Recommended","Neutre / Neutral"],a:1,exp:{fr:"C'est une violation grave (Standard II-A).",en:"It's a serious violation (Standard II-A)."}}]},
-      {title:{fr:"Reporting & escalade",en:"Reporting & escalation"},
-       lesson:{fr:"Tout collaborateur doit savoir <b>signaler</b> un manquement via les canaux internes (compliance officer, whistleblowing). Documenter les faits et préserver les preuves. La non-déclaration peut être sanctionnée.",
-               en:"Every employee must know how to <b>report</b> a breach through internal channels (compliance officer, whistleblowing). Document facts and preserve evidence. Failure to report can be sanctioned."},
-       ex:[{q:{fr:"Face à un manquement avéré, il faut :",en:"Facing a confirmed breach, you should:"},o:["Le signaler en interne / Report it internally","Le garder pour soi / Keep it quiet","Le publier sur les réseaux / Post it online","Attendre 1 an / Wait a year"],a:0,exp:{fr:"Le signalement interne documenté est la bonne voie.",en:"Documented internal reporting is the correct path."}}]}
+       lesson:{fr:"Le CFA Institute impose 6 principes, dont la <b>primauté de l'intégrité des marchés</b> et l'intérêt du client <b>avant</b> l'intérêt personnel ou de l'employeur. Les Standards couvrent professionnalisme, marchés, devoirs envers les clients et conflits.",
+               en:"CFA Institute sets 6 principles, including the <b>primacy of market integrity</b> and the client's interest <b>before</b> personal or employer interest. The Standards cover professionalism, markets, duties to clients and conflicts."},
+       ex:[{type:'mcq',q:{fr:"Selon le Code CFA, l'ordre de priorité est :",en:"Per the CFA Code, the priority order is:"},o:["Soi > Employeur > Client","Client & intégrité du marché d'abord / Client & market integrity first","Employeur d'abord / Employer first","Aucun ordre / No order"],a:1,exp:{fr:"L'intégrité du marché et le client priment.",en:"Market integrity and the client come first."}},
+           {type:'fill',q:{fr:"L'intérêt du client passe ___ l'intérêt personnel. (avant)",en:"The client's interest comes ___ personal interest. (before)"},accept:["avant","before"],exp:{fr:"Le client avant soi-même.",en:"Client before self."}}]},
+      {title:{fr:"Information privilégiée & abus de marché",en:"Insider information & market abuse"},
+       lesson:{fr:"L'<b>information privilégiée</b> (material non-public) ne doit ni servir à trader, ni être transmise (« tipping »). La <b>manipulation de marché</b> (fausses rumeurs, cours artificiels) est interdite. Sanctions civiles et pénales.",
+               en:"<b>Material non-public information</b> must not be traded on or passed along (“tipping”). <b>Market manipulation</b> (false rumours, artificial prices) is prohibited. Civil and criminal penalties apply."},
+       ex:[{type:'mcq',q:{fr:"Trader sur une information privilégiée est :",en:"Trading on inside information is:"},o:["Autorisé si discret / Allowed if discreet","Interdit / Prohibited","Recommandé / Recommended","Neutre / Neutral"],a:1,exp:{fr:"Violation grave (Standard II-A).",en:"A serious violation (Standard II-A)."}},
+           {type:'fill',q:{fr:"Transmettre une info privilégiée à un tiers s'appelle le « ___ ». (tipping)",en:"Passing inside info to a third party is called “___ ”. (tipping)"},accept:["tipping"],exp:{fr:"« Tipping » est aussi sanctionné.",en:"“Tipping” is also sanctioned."}}]},
+      {title:{fr:"Signalement & escalade",en:"Reporting & escalation"},
+       lesson:{fr:"Tout collaborateur doit savoir <b>signaler</b> un manquement via les canaux internes (compliance officer, whistleblowing). On documente les faits et on préserve les preuves. La non-déclaration peut être sanctionnée.",
+               en:"Every employee must know how to <b>report</b> a breach via internal channels (compliance officer, whistleblowing). Document facts and preserve evidence. Failure to report can be sanctioned."},
+       ex:[{type:'mcq',q:{fr:"Face à un manquement avéré, il faut :",en:"Facing a confirmed breach, you should:"},o:["Le signaler en interne / Report it internally","Le garder pour soi / Keep it quiet","Le publier en ligne / Post it online","Attendre 1 an / Wait a year"],a:0,exp:{fr:"Le signalement interne documenté est la bonne voie.",en:"Documented internal reporting is correct."}},
+           {type:'fill',q:{fr:"Le dispositif d'alerte interne s'appelle le « ___ ». (whistleblowing)",en:"The internal alert system is called “___ ”. (whistleblowing)"},accept:["whistleblowing"],exp:{fr:"Le whistleblowing protège le lanceur d'alerte.",en:"Whistleblowing protects the reporter."}}]},
+      {title:{fr:"Protection des données (RGPD)",en:"Data protection (GDPR)"},
+       lesson:{fr:"Le <b>RGPD</b> impose : <b>minimisation</b> (collecter le strict nécessaire), <b>finalité</b> (usage défini), <b>consentement</b>, <b>sécurité</b> et droit à l'<b>effacement</b>. Une fuite doit être notifiée rapidement.",
+               en:"<b>GDPR</b> requires: <b>data minimisation</b>, <b>purpose limitation</b>, <b>consent</b>, <b>security</b> and the right to <b>erasure</b>. A breach must be notified promptly."},
+       ex:[{type:'mcq',q:{fr:"Le principe de « minimisation » signifie :",en:"The “minimisation” principle means:"},o:["Tout collecter / Collect everything","Collecter le strict nécessaire / Collect only what's needed","Vendre les données / Sell the data","Garder à vie / Keep forever"],a:1,exp:{fr:"On ne collecte que le nécessaire.",en:"Collect only what is necessary."}},
+           {type:'fill',q:{fr:"Le client a un droit à l'___ de ses données. (effacement)",en:"The client has a right to ___ of their data. (erasure)"},accept:["effacement","erasure","oubli"],exp:{fr:"Droit à l'effacement / à l'oubli.",en:"Right to erasure / to be forgotten."}}]},
+      {title:{fr:"Analyse de scénario — dilemme éthique",en:"Scenario analysis — ethics dilemma"},
+       passage:{fr:"Un gérant apprend, lors d'un dîner privé, qu'une société va annoncer demain le rachat d'un concurrent. Avant l'annonce publique, il envisage d'acheter des actions de la cible pour ses clients afin d'améliorer leur performance.",
+                en:"At a private dinner, a portfolio manager learns that a company will announce the takeover of a competitor tomorrow. Before the public announcement, he considers buying the target's shares for his clients to boost their performance."},
+       lesson:{fr:"Lisez le scénario, puis identifiez la règle enfreinte et la bonne conduite.",
+               en:"Read the scenario, then identify the rule breached and the correct conduct."},
+       ex:[{type:'mcq',q:{fr:"Acheter avant l'annonce serait :",en:"Buying before the announcement would be:"},o:["Un bon service au client / Good client service","Un délit d'initié / Insider dealing","Une diversification / Diversification","Sans risque / Risk-free"],a:1,exp:{fr:"Agir sur une info non publique = délit d'initié.",en:"Acting on non-public info = insider dealing."}},
+           {type:'fill',q:{fr:"L'information n'est pas encore ___ . (publique)",en:"The information is not yet ___ . (public)"},accept:["publique","public"],exp:{fr:"Tant qu'elle n'est pas publique, interdiction d'agir.",en:"While non-public, acting is prohibited."}}]}
     ]
   },
   finance:{
     beginner:[
-      {title:{fr:"Notions clés de l'assurance",en:"Insurance fundamentals"},
-       lesson:{fr:"Vocabulaire de base : <b>prime</b> (ce que paie l'assuré), <b>franchise</b> (reste à charge), <b>sinistre</b> (événement couvert), <b>garantie</b> (ce qui est couvert), <b>exclusion</b> (ce qui ne l'est pas).",
-               en:"Core vocabulary: <b>premium</b> (what the insured pays), <b>deductible</b> (out-of-pocket share), <b>claim</b> (covered event), <b>coverage</b> (what's protected), <b>exclusion</b> (what isn't)."},
-       ex:[{q:{fr:"La franchise est :",en:"The deductible is:"},o:["Ce que paie l'assureur / What the insurer pays","Ce qui reste à la charge de l'assuré / What the insured pays out of pocket","Une taxe / A tax","Un bonus / A bonus"],a:1,exp:{fr:"La franchise reste à la charge de l'assuré.",en:"The deductible stays with the insured."}},
-           {q:{fr:"« Exclusion » désigne :",en:"“Exclusion” refers to:"},o:["Un risque non couvert / A non-covered risk","Une réduction / A discount","Un remboursement / A refund","Un client VIP / A VIP client"],a:0,exp:{fr:"Les exclusions listent ce qui n'est pas garanti.",en:"Exclusions list what is not covered."}}]},
-      {title:{fr:"La banque au quotidien",en:"Everyday banking"},
-       lesson:{fr:"<b>Compte courant</b> vs <b>compte épargne</b>, <b>crédit</b> (prêt à rembourser avec intérêts), <b>taux</b> (coût de l'argent), <b>découvert</b> (solde négatif autorisé ou non). La banque centrale fixe le taux directeur.",
-               en:"<b>Current account</b> vs <b>savings account</b>, <b>credit</b> (a loan repaid with interest), <b>rate</b> (cost of money), <b>overdraft</b> (authorised or not). The central bank sets the key rate."},
-       ex:[{q:{fr:"Le taux directeur est fixé par :",en:"The key rate is set by:"},o:["La banque centrale / The central bank","Le client / The client","Le commerçant / The merchant","L'assureur / The insurer"],a:0,exp:{fr:"C'est un outil de politique monétaire.",en:"It's a monetary-policy tool."}}]}
+      {title:{fr:"Assurance — Notions clés",en:"Insurance — Key concepts"},
+       lesson:{fr:"<span class='ptag'></span><b>ASSURANCE.</b> Vocabulaire : <b>prime</b> (ce que paie l'assuré), <b>franchise</b> (reste à charge), <b>sinistre</b> (événement couvert), <b>garantie</b> (ce qui est couvert), <b>indemnité</b> (somme versée après sinistre).",
+               en:"<b>INSURANCE.</b> Vocabulary: <b>premium</b> (what the insured pays), <b>deductible</b> (out-of-pocket share), <b>claim</b> (covered event), <b>coverage</b>, <b>indemnity</b> (amount paid after a claim)."},
+       ex:[{type:'mcq',q:{fr:"La franchise est :",en:"The deductible is:"},o:["Ce que paie l'assureur / What the insurer pays","Ce qui reste à la charge de l'assuré / Paid by the insured","Une taxe / A tax","Un bonus / A bonus"],a:1,exp:{fr:"La franchise reste à la charge de l'assuré.",en:"The deductible stays with the insured."}},
+           {type:'fill',q:{fr:"La somme payée par l'assuré chaque année est la ___ . (prime)",en:"The amount the insured pays each year is the ___ . (premium)"},accept:["prime","premium"],exp:{fr:"La prime finance la couverture.",en:"The premium funds the cover."}}]},
+      {title:{fr:"Assurance — Garanties & exclusions",en:"Insurance — Coverage & exclusions"},
+       lesson:{fr:"<b>ASSURANCE.</b> Le contrat liste les <b>garanties</b> (risques couverts) et les <b>exclusions</b> (non couverts). La <b>déclaration</b> exacte du risque est obligatoire : une fausse déclaration peut annuler l'indemnisation.",
+               en:"<b>INSURANCE.</b> The policy lists <b>coverage</b> (covered risks) and <b>exclusions</b> (not covered). Accurate <b>risk disclosure</b> is mandatory: a false statement can void the payout."},
+       ex:[{type:'mcq',q:{fr:"« Exclusion » désigne :",en:"“Exclusion” refers to:"},o:["Un risque non couvert / A non-covered risk","Une réduction / A discount","Un remboursement / A refund","Un client VIP / A VIP client"],a:0,exp:{fr:"Les exclusions listent ce qui n'est pas garanti.",en:"Exclusions list what is not covered."}},
+           {type:'fill',q:{fr:"Une fausse ___ du risque peut annuler l'indemnisation. (déclaration)",en:"A false risk ___ can void the payout. (disclosure/declaration)"},accept:["déclaration","declaration","disclosure"],exp:{fr:"La bonne foi est essentielle en assurance.",en:"Good faith is essential in insurance."}}]},
+      {title:{fr:"Banque — Comptes & paiements",en:"Banking — Accounts & payments"},
+       lesson:{fr:"<b>BANQUE.</b> <b>Compte courant</b> (usage quotidien) vs <b>compte épargne</b> (rémunéré). Moyens de paiement : virement, prélèvement, carte. Le <b>découvert</b> est un solde négatif, autorisé ou non.",
+               en:"<b>BANKING.</b> <b>Current account</b> (daily use) vs <b>savings account</b> (interest-bearing). Payment means: transfer, direct debit, card. An <b>overdraft</b> is a negative balance, authorised or not."},
+       ex:[{type:'mcq',q:{fr:"Un compte épargne se distingue surtout par :",en:"A savings account is mainly distinguished by:"},o:["Sa carte gratuite / Free card","Sa rémunération (intérêts) / Interest paid","Son découvert / Its overdraft","Ses chèques / Its cheques"],a:1,exp:{fr:"L'épargne génère des intérêts.",en:"Savings earns interest."}},
+           {type:'fill',q:{fr:"Un solde négatif sur le compte s'appelle un ___ . (découvert)",en:"A negative balance is called an ___ . (overdraft)"},accept:["découvert","decouvert","overdraft"],exp:{fr:"Le découvert peut être autorisé ou non.",en:"An overdraft may be authorised or not."}}]},
+      {title:{fr:"Banque — Crédit & taux",en:"Banking — Credit & rates"},
+       lesson:{fr:"<b>BANQUE.</b> Un <b>crédit</b> est un prêt remboursé avec <b>intérêts</b>. Le <b>taux</b> est le coût de l'argent ; il peut être <b>fixe</b> ou <b>variable</b>. La banque centrale fixe le <b>taux directeur</b> qui influence tous les autres.",
+               en:"<b>BANKING.</b> <b>Credit</b> is a loan repaid with <b>interest</b>. The <b>rate</b> is the cost of money; it can be <b>fixed</b> or <b>variable</b>. The central bank sets the <b>key rate</b> influencing all others."},
+       ex:[{type:'mcq',q:{fr:"Le taux directeur est fixé par :",en:"The key rate is set by:"},o:["La banque centrale / The central bank","Le client / The client","Le commerçant / The merchant","L'assureur / The insurer"],a:0,exp:{fr:"Outil de politique monétaire.",en:"A monetary-policy tool."}},
+           {type:'fill',q:{fr:"Un crédit se rembourse avec des ___ . (intérêts)",en:"A loan is repaid with ___ . (interest)"},accept:["intérêts","interets","interest","intérêt"],exp:{fr:"Les intérêts rémunèrent le prêteur.",en:"Interest compensates the lender."}}]},
+      {title:{fr:"Assurance — Analyse d'un contrat",en:"Insurance — Reading a policy"},
+       passage:{fr:"Contrat auto — Garanties : dommages tous accidents, vol, incendie. Franchise : 300 € par sinistre. Exclusions : conduite sans permis valide, courses de vitesse. Prime annuelle : 720 €.",
+                en:"Car policy — Coverage: all-accident damage, theft, fire. Deductible: €300 per claim. Exclusions: driving without a valid licence, racing. Annual premium: €720."},
+       lesson:{fr:"<b>ASSURANCE.</b> Lisez l'extrait de contrat, puis répondez.",
+               en:"<b>INSURANCE.</b> Read the policy extract, then answer."},
+       ex:[{type:'fill',q:{fr:"Quelle est la franchise par sinistre ? (en €)",en:"What is the deductible per claim? (in €)"},accept:["300","300 €","300€","300 euros"],exp:{fr:"« Franchise : 300 € par sinistre ».",en:"“Deductible: €300 per claim.”"}},
+           {type:'mcq',q:{fr:"Lequel n'est PAS couvert ?",en:"Which is NOT covered?"},o:["Le vol / Theft","L'incendie / Fire","Conduire sans permis / Driving without a licence","Un accident / An accident"],a:2,exp:{fr:"Conduite sans permis = exclusion.",en:"Driving without a licence is excluded."}}]}
     ],
     intermediate:[
-      {title:{fr:"Produits d'épargne & risque",en:"Savings products & risk"},
-       lesson:{fr:"Arbitrage <b>rendement / risque / liquidité</b>. Un produit à <b>capital garanti</b> protège la mise mais rapporte moins ; les <b>unités de compte</b> peuvent plus rapporter mais ne sont pas garanties. La diversification réduit le risque.",
-               en:"The <b>return / risk / liquidity</b> trade-off. A <b>capital-guaranteed</b> product protects the principal but pays less; <b>unit-linked</b> funds may pay more but aren't guaranteed. Diversification reduces risk."},
-       ex:[{q:{fr:"« Capital garanti » implique généralement :",en:"“Capital-guaranteed” usually implies:"},o:["Rendement élevé / High return","Protection du capital, rendement modéré / Principal protected, moderate return","Aucune fiscalité / No taxes","Liquidité illimitée / Unlimited liquidity"],a:1,exp:{fr:"Sécurité du capital = rendement plus modéré.",en:"Capital safety = a more moderate return."}},
-           {q:{fr:"La diversification sert à :",en:"Diversification serves to:"},o:["Augmenter les frais / Increase fees","Réduire le risque global / Reduce overall risk","Garantir un gain / Guarantee a gain","Éviter l'impôt / Avoid tax"],a:1,exp:{fr:"Répartir les actifs lisse le risque.",en:"Spreading assets smooths risk."}}]},
-      {title:{fr:"Solvabilité & réglementation",en:"Solvency & regulation"},
-       lesson:{fr:"Les banques sont soumises à des <b>ratios de fonds propres</b> (Bâle III) ; les assureurs à <b>Solvabilité II</b>. Ces règles imposent un coussin de capital pour absorber les pertes et protéger les clients.",
-               en:"Banks face <b>capital ratios</b> (Basel III); insurers face <b>Solvency II</b>. These rules require a capital buffer to absorb losses and protect clients."},
-       ex:[{q:{fr:"Un ratio de solvabilité élevé indique :",en:"A high solvency ratio indicates:"},o:["Plus de capacité à absorber les pertes / More loss-absorbing capacity","Plus de clients / More clients","Plus d'agences / More branches","Moins d'impôts / Less tax"],a:0,exp:{fr:"Plus de fonds propres = plus de résilience.",en:"More own funds = more resilience."}}]}
+      {title:{fr:"Assurance — Épargne & risque",en:"Insurance — Savings & risk"},
+       lesson:{fr:"<b>ASSURANCE.</b> Arbitrage <b>rendement / risque / liquidité</b>. Un fonds en <b>euros</b> (capital garanti) est sûr mais peu rémunérateur ; les <b>unités de compte</b> peuvent rapporter plus mais ne sont pas garanties. La diversification réduit le risque.",
+               en:"<b>INSURANCE.</b> The <b>return / risk / liquidity</b> trade-off. A <b>euro fund</b> (capital-guaranteed) is safe but low-yield; <b>unit-linked</b> funds may pay more but aren't guaranteed. Diversification reduces risk."},
+       ex:[{type:'mcq',q:{fr:"« Capital garanti » implique généralement :",en:"“Capital-guaranteed” usually implies:"},o:["Rendement élevé / High return","Capital protégé, rendement modéré / Principal protected, moderate return","Aucune fiscalité / No taxes","Liquidité illimitée / Unlimited liquidity"],a:1,exp:{fr:"Sécurité = rendement plus modéré.",en:"Safety = a more moderate return."}},
+           {type:'fill',q:{fr:"Les supports non garantis d'une assurance-vie sont les « ___ de compte ». (unités)",en:"The non-guaranteed supports of a life policy are the “___ -linked” funds. (unit)"},accept:["unités","unites","unit"],exp:{fr:"Unités de compte = risque de marché.",en:"Unit-linked = market risk."}}]},
+      {title:{fr:"Assurance — Solvabilité II",en:"Insurance — Solvency II"},
+       lesson:{fr:"<b>ASSURANCE.</b> <b>Solvabilité II</b> impose aux assureurs européens un capital suffisant pour faire face à leurs engagements (probabilité de ruine < 0,5 % à 1 an). Trois piliers : exigences quantitatives, gouvernance des risques, transparence.",
+               en:"<b>INSURANCE.</b> <b>Solvency II</b> requires EU insurers to hold enough capital to meet liabilities (ruin probability < 0.5% over 1 year). Three pillars: quantitative requirements, risk governance, disclosure."},
+       ex:[{type:'mcq',q:{fr:"Solvabilité II vise surtout à :",en:"Solvency II mainly aims to:"},o:["Augmenter les primes / Raise premiums","Garantir la solidité financière de l'assureur / Ensure the insurer's financial strength","Réduire les agences / Cut branches","Supprimer les franchises / Remove deductibles"],a:1,exp:{fr:"Protéger les assurés via un capital suffisant.",en:"Protect policyholders via adequate capital."}},
+           {type:'fill',q:{fr:"Solvabilité II repose sur ___ piliers. (chiffre)",en:"Solvency II rests on ___ pillars. (number)"},accept:["3","trois","three"],exp:{fr:"Quantitatif, gouvernance, transparence.",en:"Quantitative, governance, disclosure."}}]},
+      {title:{fr:"Banque — Ratios prudentiels (Bâle III)",en:"Banking — Prudential ratios (Basel III)"},
+       lesson:{fr:"<b>BANQUE.</b> <b>Bâle III</b> impose des <b>fonds propres</b> minimaux (ratio CET1) et des ratios de <b>liquidité</b> (LCR) pour absorber les chocs. Objectif : éviter les faillites bancaires et protéger les déposants.",
+               en:"<b>BANKING.</b> <b>Basel III</b> sets minimum <b>capital</b> (CET1 ratio) and <b>liquidity</b> ratios (LCR) to absorb shocks. Goal: prevent bank failures and protect depositors."},
+       ex:[{type:'mcq',q:{fr:"Un ratio de solvabilité élevé indique :",en:"A high solvency ratio indicates:"},o:["Plus de capacité à absorber les pertes / More loss-absorbing capacity","Plus de clients / More clients","Plus d'agences / More branches","Moins d'impôts / Less tax"],a:0,exp:{fr:"Plus de fonds propres = plus de résilience.",en:"More own funds = more resilience."}},
+           {type:'fill',q:{fr:"Le cadre prudentiel bancaire international s'appelle « ___ III ». (Bâle/Basel)",en:"The international banking framework is called “___ III”. (Basel)"},accept:["bâle","bale","basel"],exp:{fr:"Bâle III renforce Bâle II.",en:"Basel III strengthens Basel II."}}]},
+      {title:{fr:"Banque — Crédit, scoring & risque",en:"Banking — Credit, scoring & risk"},
+       lesson:{fr:"<b>BANQUE.</b> Avant un prêt, la banque évalue le <b>risque de crédit</b> via le <b>scoring</b> (revenus, endettement, historique). Le <b>taux d'endettement</b> ne devrait pas dépasser ~35 %. Une garantie (caution, hypothèque) réduit le risque.",
+               en:"<b>BANKING.</b> Before a loan, the bank assesses <b>credit risk</b> via <b>scoring</b> (income, debt, history). The <b>debt-to-income ratio</b> should not exceed ~35%. Collateral (guarantee, mortgage) lowers risk."},
+       ex:[{type:'mcq',q:{fr:"Le « scoring » sert à :",en:"“Scoring” is used to:"},o:["Noter le risque de l'emprunteur / Rate the borrower's risk","Fixer les frais de carte / Set card fees","Choisir l'agence / Pick the branch","Calculer la TVA / Compute VAT"],a:0,exp:{fr:"Le scoring évalue la solvabilité.",en:"Scoring assesses creditworthiness."}},
+           {type:'fill',q:{fr:"Le taux d'endettement ne devrait pas dépasser environ ___ %. (chiffre)",en:"The debt-to-income ratio should not exceed about ___ %. (number)"},accept:["35","33","35%"],exp:{fr:"Repère courant : ~35 % en France.",en:"Common benchmark: ~35%."}}]},
+      {title:{fr:"Banque — Analyse d'un cas client",en:"Banking — Client case analysis"},
+       passage:{fr:"Un client gagne 2 000 € net/mois. Il rembourse déjà 400 € de crédit auto et demande un nouveau prêt avec une mensualité de 450 €. La banque applique un seuil d'endettement de 35 %.",
+                en:"A client earns €2,000 net/month. He already repays €400 of car loan and asks for a new loan with a €450 monthly payment. The bank applies a 35% debt threshold."},
+       lesson:{fr:"<b>BANQUE.</b> Lisez le cas, puis évaluez la demande (35 % de 2 000 € = 700 €).",
+               en:"<b>BANKING.</b> Read the case, then assess the request (35% of €2,000 = €700)."},
+       ex:[{type:'fill',q:{fr:"Quelle est la mensualité maximale autorisée ? (en €)",en:"What is the maximum allowed monthly payment? (in €)"},accept:["700","700 €","700€","700 euros"],exp:{fr:"35 % × 2 000 = 700 €.",en:"35% × 2,000 = €700."}},
+           {type:'mcq',q:{fr:"Le nouveau prêt peut-il être accordé ?",en:"Can the new loan be granted?"},o:["Oui, 400+450 ≤ 700 / Yes","Non, 400+450 = 850 > 700 / No, it exceeds 700","Oui, sans condition / Yes, unconditionally","Impossible à dire / Cannot tell"],a:1,exp:{fr:"400 + 450 = 850 € > 700 € : refus en l'état.",en:"400 + 450 = €850 > €700: refused as is."}}]}
     ]
   },
   it:{
     beginner:[
       {title:{fr:"Variables & types",en:"Variables & types"},
-       lesson:{fr:"Une <b>variable</b> stocke une valeur sous un nom. Types courants : <b>nombre</b> (42), <b>texte/string</b> (\"bonjour\"), <b>booléen</b> (true/false). Exemple : <code>age = 30</code>.",
-               en:"A <b>variable</b> stores a value under a name. Common types: <b>number</b> (42), <b>string</b> (\"hello\"), <b>boolean</b> (true/false). Example: <code>age = 30</code>."},
-       ex:[{q:{fr:"\"Paris\" est de type :",en:"\"Paris\" is of type:"},o:["Nombre / Number","Texte (string) / String","Booléen / Boolean","Fonction / Function"],a:1,exp:{fr:"Entre guillemets = chaîne de caractères.",en:"In quotes = a string."}},
-           {q:{fr:"true / false est un :",en:"true / false is a:"},o:["String","Booléen / Boolean","Nombre / Number","Tableau / Array"],a:1,exp:{fr:"Deux valeurs logiques : le booléen.",en:"Two logical values: a boolean."}}]},
+       lesson:{fr:"Une <b>variable</b> stocke une valeur sous un nom. Types : <b>nombre</b> (42), <b>texte/string</b> ('bonjour'), <b>booléen</b> (true/false). Exemple : <code>age = 30</code>.",
+               en:"A <b>variable</b> stores a value under a name. Types: <b>number</b> (42), <b>string</b> ('hello'), <b>boolean</b> (true/false). Example: <code>age = 30</code>."},
+       ex:[{type:'mcq',q:{fr:"'Paris' est de type :",en:"'Paris' is of type:"},o:["Nombre / Number","Texte (string) / String","Booléen / Boolean","Fonction / Function"],a:1,exp:{fr:"Entre guillemets = chaîne de caractères.",en:"In quotes = a string."}},
+           {type:'fill',q:{fr:"Le type à deux valeurs true/false s'appelle un ___ . (booléen)",en:"The two-value true/false type is a ___ . (boolean)"},accept:["booléen","booleen","boolean"],exp:{fr:"Booléen = vrai/faux.",en:"Boolean = true/false."}}]},
       {title:{fr:"Conditions (if / else)",en:"Conditions (if / else)"},
-       lesson:{fr:"Une <b>condition</b> exécute du code selon qu'un test est vrai ou faux : <code>if (age >= 18) { ... } else { ... }</code>. Opérateurs : <code>></code>, <code><</code>, <code>==</code> (égal), <code>!=</code> (différent).",
-               en:"A <b>condition</b> runs code depending on whether a test is true or false: <code>if (age >= 18) { ... } else { ... }</code>. Operators: <code>></code>, <code><</code>, <code>==</code> (equal), <code>!=</code> (not equal)."},
-       ex:[{q:{fr:"Que vaut (10 == 10) ?",en:"What is (10 == 10)?"},o:["true","false","10","null"],a:0,exp:{fr:"Les deux valeurs sont égales → true.",en:"Both values are equal → true."}}]}
+       lesson:{fr:"Une <b>condition</b> exécute du code selon un test : <code>if (age >= 18) { ... } else { ... }</code>. Opérateurs : <code>></code>, <code><</code>, <code>==</code> (égal), <code>!=</code> (différent).",
+               en:"A <b>condition</b> runs code based on a test: <code>if (age >= 18) { ... } else { ... }</code>. Operators: <code>></code>, <code><</code>, <code>==</code> (equal), <code>!=</code> (not equal)."},
+       ex:[{type:'mcq',q:{fr:"Que vaut (10 == 10) ?",en:"What is (10 == 10)?"},o:["true","false","10","null"],a:0,exp:{fr:"Les deux valeurs sont égales → true.",en:"Equal values → true."}},
+           {type:'fill',q:{fr:"L'opérateur « différent de » s'écrit ___ . (symbole)",en:"The “not equal” operator is written ___ . (symbol)"},accept:["!=","!=="],exp:{fr:"!= teste l'inégalité.",en:"!= tests inequality."}}]},
+      {title:{fr:"Opérateurs & comparaisons",en:"Operators & comparisons"},
+       lesson:{fr:"Arithmétique : <code>+ - * /</code> et <code>%</code> (reste). Comparaison : <code>></code>, <code><</code>, <code>>=</code>, <code><=</code>. Logique : <code>&&</code> (et), <code>||</code> (ou), <code>!</code> (non).",
+               en:"Arithmetic: <code>+ - * /</code> and <code>%</code> (remainder). Comparison: <code>></code>, <code><</code>, <code>>=</code>, <code><=</code>. Logic: <code>&&</code> (and), <code>||</code> (or), <code>!</code> (not)."},
+       ex:[{type:'fill',q:{fr:"Que vaut 10 % 3 ? (reste de la division)",en:"What is 10 % 3? (remainder)"},accept:["1"],exp:{fr:"10 = 3×3 + 1, reste = 1.",en:"10 = 3×3 + 1, remainder 1."}},
+           {type:'mcq',q:{fr:"L'opérateur « ET » logique s'écrit :",en:"The logical AND operator is:"},o:["&&","||","!","=="],a:0,exp:{fr:"&& = ET ; || = OU.",en:"&& = AND; || = OR."}}]},
+      {title:{fr:"Chaînes & nombres",en:"Strings & numbers"},
+       lesson:{fr:"Attention au type : <code>'3' + '4'</code> donne <code>'34'</code> (concaténation de textes), alors que <code>3 + 4</code> donne <code>7</code>. On convertit avec <code>Number('3')</code>.",
+               en:"Watch the type: <code>'3' + '4'</code> gives <code>'34'</code> (string concatenation), while <code>3 + 4</code> gives <code>7</code>. Convert with <code>Number('3')</code>."},
+       ex:[{type:'mcq',q:{fr:"Que renvoie '3' + '4' ?",en:"What does '3' + '4' return?"},o:["7","'34'","12","Erreur / Error"],a:1,exp:{fr:"Deux chaînes → concaténation : '34'.",en:"Two strings → concatenation: '34'."}},
+           {type:'fill',q:{fr:"Pour convertir '5' en nombre, on écrit ___ ('5'). (fonction)",en:"To convert '5' to a number, write ___ ('5'). (function)"},accept:["number","parseint","parsefloat"],exp:{fr:"Number('5') = 5.",en:"Number('5') = 5."}}]},
+      {title:{fr:"Lire du code — que fait-il ?",en:"Reading code — what does it do?"},
+       passage:{fr:"let total = 0;\nfor (let i = 1; i <= 3; i++) {\n  total = total + i;\n}\n// total = ?",
+                en:"let total = 0;\nfor (let i = 1; i <= 3; i++) {\n  total = total + i;\n}\n// total = ?"},
+       lesson:{fr:"Lisez le code ci-dessus et calculez le résultat. La boucle additionne i pour i = 1, 2, 3.",
+               en:"Read the code above and compute the result. The loop adds i for i = 1, 2, 3."},
+       ex:[{type:'fill',q:{fr:"Quelle est la valeur finale de total ? (nombre)",en:"What is the final value of total? (number)"},accept:["6"],exp:{fr:"1 + 2 + 3 = 6.",en:"1 + 2 + 3 = 6."}},
+           {type:'mcq',q:{fr:"Combien de fois la boucle s'exécute-t-elle ?",en:"How many times does the loop run?"},o:["2","3","4","Infini / Infinite"],a:1,exp:{fr:"i = 1, 2, 3 → 3 fois.",en:"i = 1, 2, 3 → 3 times."}}]}
     ],
     intermediate:[
       {title:{fr:"Boucles",en:"Loops"},
-       lesson:{fr:"Une <b>boucle</b> répète des instructions. <code>for (i=0; i<5; i++) { ... }</code> s'exécute 5 fois. Utile pour parcourir des listes sans répéter le code.",
-               en:"A <b>loop</b> repeats instructions. <code>for (i=0; i<5; i++) { ... }</code> runs 5 times. Useful to go through lists without repeating code."},
-       ex:[{q:{fr:"Combien de fois s'exécute for(i=0;i<3;i++) ?",en:"How many times does for(i=0;i<3;i++) run?"},o:["2","3","4","Infini / Infinite"],a:1,exp:{fr:"i = 0,1,2 → 3 itérations.",en:"i = 0,1,2 → 3 iterations."}},
-           {q:{fr:"Une boucle infinie arrive quand :",en:"An infinite loop happens when:"},o:["La condition reste vraie / The condition stays true","On ferme la page / You close the page","On utilise un string / You use a string","Jamais / Never"],a:0,exp:{fr:"Si la condition n'est jamais fausse, ça ne s'arrête pas.",en:"If the condition never becomes false, it never stops."}}]},
+       lesson:{fr:"Une <b>boucle</b> répète des instructions. <code>for (i=0; i<5; i++) { ... }</code> s'exécute 5 fois. <code>while (condition) { ... }</code> tant que la condition est vraie. Utile pour parcourir des listes.",
+               en:"A <b>loop</b> repeats instructions. <code>for (i=0; i<5; i++) { ... }</code> runs 5 times. <code>while (condition) { ... }</code> runs while true. Useful to go through lists."},
+       ex:[{type:'mcq',q:{fr:"Combien de fois s'exécute for(i=0;i<3;i++) ?",en:"How many times does for(i=0;i<3;i++) run?"},o:["2","3","4","Infini / Infinite"],a:1,exp:{fr:"i = 0,1,2 → 3 itérations.",en:"i = 0,1,2 → 3 iterations."}},
+           {type:'fill',q:{fr:"La boucle qui s'exécute « tant que » s'appelle une boucle ___ . (anglais)",en:"The loop that runs “as long as” is the ___ loop. (keyword)"},accept:["while"],exp:{fr:"while = tant que.",en:"while = as long as."}}]},
       {title:{fr:"Fonctions",en:"Functions"},
-       lesson:{fr:"Une <b>fonction</b> regroupe du code réutilisable, avec des <b>paramètres</b> en entrée et une <b>valeur de retour</b> en sortie : <code>function add(a,b){ return a+b; }</code>. Appel : <code>add(2,3) → 5</code>.",
-               en:"A <b>function</b> bundles reusable code, with <b>parameters</b> as input and a <b>return value</b> as output: <code>function add(a,b){ return a+b; }</code>. Call: <code>add(2,3) → 5</code>."},
-       ex:[{q:{fr:"add(4,5) renvoie :",en:"add(4,5) returns:"},o:["9","45","20","Erreur / Error"],a:0,exp:{fr:"La fonction additionne : 4+5 = 9.",en:"The function adds: 4+5 = 9."}}]}
+       lesson:{fr:"Une <b>fonction</b> regroupe du code réutilisable, avec des <b>paramètres</b> en entrée et une valeur de <b>retour</b> : <code>function add(a,b){ return a+b; }</code>. Appel : <code>add(2,3)</code> → 5.",
+               en:"A <b>function</b> bundles reusable code, with <b>parameters</b> and a <b>return</b> value: <code>function add(a,b){ return a+b; }</code>. Call: <code>add(2,3)</code> → 5."},
+       ex:[{type:'mcq',q:{fr:"add(4,5) renvoie :",en:"add(4,5) returns:"},o:["9","45","20","Erreur / Error"],a:0,exp:{fr:"4 + 5 = 9.",en:"4 + 5 = 9."}},
+           {type:'fill',q:{fr:"Le mot-clé qui renvoie une valeur depuis une fonction est ___ . (anglais)",en:"The keyword that sends a value back from a function is ___ ."},accept:["return"],exp:{fr:"return renvoie le résultat.",en:"return sends the result back."}}]},
+      {title:{fr:"Tableaux / listes",en:"Arrays / lists"},
+       lesson:{fr:"Un <b>tableau</b> stocke plusieurs valeurs : <code>let t = [10, 20, 30];</code>. On accède par <b>index</b> (commence à 0) : <code>t[0]</code> = 10. <code>t.length</code> = 3.",
+               en:"An <b>array</b> stores several values: <code>let t = [10, 20, 30];</code>. Access by <b>index</b> (starts at 0): <code>t[0]</code> = 10. <code>t.length</code> = 3."},
+       ex:[{type:'mcq',q:{fr:"Pour t = [10,20,30], que vaut t[1] ?",en:"For t = [10,20,30], what is t[1]?"},o:["10","20","30","1"],a:1,exp:{fr:"L'index commence à 0, donc t[1] = 20.",en:"Index starts at 0, so t[1] = 20."}},
+           {type:'fill',q:{fr:"Pour connaître la taille d'un tableau t, on écrit t.___ . (propriété)",en:"To get an array's size, write t.___ . (property)"},accept:["length"],exp:{fr:"t.length donne le nombre d'éléments.",en:"t.length gives the element count."}}]},
+      {title:{fr:"Logique & booléens",en:"Logic & booleans"},
+       lesson:{fr:"Les booléens combinent des conditions : <code>&&</code> exige les deux vraies, <code>||</code> une seule, <code>!</code> inverse. Ex : <code>(age>=18 && hasID)</code> est vrai si les deux le sont.",
+               en:"Booleans combine conditions: <code>&&</code> needs both true, <code>||</code> needs one, <code>!</code> inverts. Ex: <code>(age>=18 && hasID)</code> is true if both are."},
+       ex:[{type:'fill',q:{fr:"Que vaut (true && false) ? (true/false)",en:"What is (true && false)? (true/false)"},accept:["false"],exp:{fr:"&& exige les deux vraies → false.",en:"&& needs both true → false."}},
+           {type:'mcq',q:{fr:"Que vaut (true || false) ?",en:"What is (true || false)?"},o:["true","false","null","0"],a:0,exp:{fr:"|| est vrai si au moins une l'est.",en:"|| is true if at least one is."}}]},
+      {title:{fr:"Débogage — trouve l'erreur",en:"Debugging — find the error"},
+       passage:{fr:"function isAdult(age) {\n  if (age > 18)\n    return 'adulte';\n  return 'mineur';\n}\nisAdult(18);  // renvoie 'mineur' — pourquoi ?",
+                en:"function isAdult(age) {\n  if (age > 18)\n    return 'adult';\n  return 'minor';\n}\nisAdult(18);  // returns 'minor' — why?"},
+       lesson:{fr:"Lisez le code : à 18 ans, la fonction renvoie 'mineur'. Repérez l'erreur de logique dans la comparaison.",
+               en:"Read the code: at 18, it returns 'minor'. Spot the logic error in the comparison."},
+       ex:[{type:'mcq',q:{fr:"Quelle est l'erreur ?",en:"What is the bug?"},o:["Il manque une variable / Missing variable","On devrait utiliser >= au lieu de > / Should use >= not >","La fonction n'a pas de nom / No function name","return est mal orthographié / return misspelled"],a:1,exp:{fr:"18 > 18 est faux ; il faut age >= 18.",en:"18 > 18 is false; use age >= 18."}},
+           {type:'fill',q:{fr:"Quel opérateur corrige le bug ? (symbole, pour inclure 18)",en:"Which operator fixes it? (symbol, to include 18)"},accept:[">=","> ="],exp:{fr:"age >= 18 inclut 18.",en:"age >= 18 includes 18."}}]}
     ]
   }
 };
@@ -330,14 +478,13 @@ const DB = {
   session(){ return localStorage.getItem('su_session'); },
   setSession(e){ e?localStorage.setItem('su_session',e):localStorage.removeItem('su_session'); }
 };
-// lightweight hash (prototype only — not cryptographic)
 function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return ''+h;}
 function currentUser(){ const e=DB.session(); if(!e) return null; return DB.users()[e]||null; }
 function saveUser(u){ const all=DB.users(); all[u.email]=u; DB.saveUsers(all); }
+function normalize(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9% ]/g,'').replace(/\s+/g,' ').trim(); }
 
 /* ============ App state ============ */
 let st = { domain:null };
-
 function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
 function show(id){['view-gate','view-auth','view-dash','view-test','view-modules'].forEach(v=>document.getElementById(v).classList.toggle('hidden',v!==id));}
 function gatePassed(){ return localStorage.getItem('su_gate_ok')==='1'; }
@@ -359,12 +506,12 @@ function render(){
   else { renderDash(); show('view-dash'); }
 }
 
-/* ============ Gate view (code d'accès) ============ */
+/* ============ Gate view ============ */
 function renderGate(){
   const v=document.getElementById('view-gate');
   v.innerHTML=`
    <div class="card" style="max-width:420px;margin:40px auto;text-align:center">
-     <div class="logo" style="width:54px;height:54px;border-radius:16px;margin:0 auto 14px;font-size:24px">🔒</div>
+     <div class="logo" style="width:56px;height:56px;border-radius:16px;margin:0 auto 14px;font-size:26px">🔒</div>
      <h1>${t('gateTitle')}</h1>
      <p class="sub">${t('gateSub')}</p>
      <input id="g-code" placeholder="••••••" style="text-align:center;letter-spacing:2px;font-weight:700"
@@ -376,11 +523,8 @@ function renderGate(){
 }
 function submitGate(){
   const val=(document.getElementById('g-code').value||'').trim();
-  if(val.toUpperCase()===ACCESS_CODE.toUpperCase()){
-    localStorage.setItem('su_gate_ok','1'); render();
-  } else {
-    document.getElementById('gate-msg').textContent=t('gateErr');
-  }
+  if(val.toUpperCase()===ACCESS_CODE.toUpperCase()){ localStorage.setItem('su_gate_ok','1'); render(); }
+  else { document.getElementById('gate-msg').textContent=t('gateErr'); }
 }
 
 /* ============ Auth view ============ */
@@ -430,14 +574,13 @@ function renderDash(){
   let cards='';
   for(const key in DOMAINS){
     const d=DOMAINS[key]; const p=u.progress[key];
-    let badge=`<span class="badge none">${t('notTested')}</span>`, barHtml='', cta=t('startTest');
+    let badge=`<span class="badge none">${t('notTested')}</span>`, barHtml='';
     if(p&&p.level){
       const lvl = p.level==='beginner'?t('levelBeginner'):t('levelInter');
       const cls = p.level==='beginner'?'deb':'int';
       badge=`<span class="badge ${cls}">${t('level')}: ${lvl}</span>`;
       const pct=moduleProgress(key,p.level);
       barHtml=`<div class="bar"><i style="width:${pct}%"></i></div><small class="muted">${t('progress')}: ${pct}%</small>`;
-      cta=t('openModules');
     }
     cards+=`<div class="domain" onclick="enterDomain('${key}')">
        <div class="ic">${d.ic}</div>
@@ -519,11 +662,21 @@ function renderModules(){
   let list='';
   mods.forEach((m,mi)=>{
     const done=p.modules&&p.modules[mi];
+    const passageHtml = m.passage ? `<div class="passage"><span class="ptag">📄 ${t('textToAnalyze')}</span>${(m.passage[lang]).replace(/\n/g,'<br>')}</div>` : '';
     let ex='';
     m.ex.forEach((e,ei)=>{
-      let opts='';
-      e.o.forEach((o,j)=>{ opts+=`<button class="opt" onclick="answerEx(${mi},${ei},${j})" id="ex-${mi}-${ei}-${j}">${o}</button>`; });
-      ex+=`<div class="q" style="margin-top:14px"><b>${e.q[lang]}</b>${opts}<div class="expl hidden" id="exp-${mi}-${ei}"></div></div>`;
+      if(e.type==='fill'){
+        ex+=`<div class="q" style="margin-top:14px"><b>${e.q[lang]}</b>
+              <div class="fillrow">
+                <input id="fi-${mi}-${ei}" placeholder="${t('yourAnswer')}" onkeydown="if(event.key==='Enter')answerFill(${mi},${ei})">
+                <button class="btn sm" onclick="answerFill(${mi},${ei})">${t('checkAns')}</button>
+              </div>
+              <div class="expl hidden" id="exp-${mi}-${ei}"></div></div>`;
+      } else {
+        let opts='';
+        e.o.forEach((o,j)=>{ opts+=`<button class="opt" onclick="answerEx(${mi},${ei},${j})" id="ex-${mi}-${ei}-${j}">${o}</button>`; });
+        ex+=`<div class="q" style="margin-top:14px"><b>${e.q[lang]}</b>${opts}<div class="expl hidden" id="exp-${mi}-${ei}"></div></div>`;
+      }
     });
     list+=`<div class="module">
        <div class="mhead" onclick="toggleModule(${mi})">
@@ -532,6 +685,7 @@ function renderModules(){
        </div>
        <div id="mbody-${mi}" class="${st.openModule===mi?'':'hidden'}">
          <div class="lesson"><b>${t('lesson')}</b><br>${m.lesson[lang]}</div>
+         ${passageHtml}
          <h3>${t('practice')}</h3>${ex}
          <button class="btn ghost" style="margin-top:14px" onclick="markDone(${mi})">${done?('✓ '+t('done')):t('markDone')}</button>
        </div>
@@ -552,8 +706,9 @@ function renderModules(){
    </div>`;
 }
 function toggleModule(mi){ st.openModule = st.openModule===mi?null:mi; renderModules(); }
+function curLevel(){ return currentUser().progress[st.domain].level; }
 function answerEx(mi,ei,j){
-  const e=MODULES[st.domain][currentUser().progress[st.domain].level][mi].ex[ei];
+  const e=MODULES[st.domain][curLevel()][mi].ex[ei];
   for(let k=0;k<e.o.length;k++){
     const el=document.getElementById(`ex-${mi}-${ei}-${k}`); if(!el)continue;
     el.classList.remove('correct','wrong');
@@ -563,6 +718,17 @@ function answerEx(mi,ei,j){
   const exp=document.getElementById(`exp-${mi}-${ei}`);
   exp.classList.remove('hidden');
   exp.innerHTML=(j===e.a?('✅ '+t('correct')):('❌ '+t('incorrect')))+' '+(e.exp?e.exp[lang]:'');
+}
+function answerFill(mi,ei){
+  const e=MODULES[st.domain][curLevel()][mi].ex[ei];
+  const input=document.getElementById(`fi-${mi}-${ei}`);
+  const val=normalize(input.value);
+  const ok=e.accept.some(a=>normalize(a)===val) && val!=='';
+  input.classList.remove('good','bad'); input.classList.add(ok?'good':'bad'); input.setAttribute('disabled','');
+  const exp=document.getElementById(`exp-${mi}-${ei}`);
+  exp.classList.remove('hidden');
+  let txt = ok ? ('✅ '+t('correct')) : ('❌ '+t('incorrect')+' '+t('correctWas')+' '+e.accept[0]);
+  exp.innerHTML = txt + ' ' + (e.exp?e.exp[lang]:'');
 }
 function markDone(mi){
   const u=currentUser(); const p=u.progress[st.domain]; p.modules=p.modules||{};
